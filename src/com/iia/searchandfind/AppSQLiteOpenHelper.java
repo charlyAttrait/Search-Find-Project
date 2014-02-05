@@ -1,17 +1,12 @@
 package com.iia.searchandfind;
 
-import com.goyavi.data.Contract.AdviceContract;
-import com.goyavi.data.Contract.DesignationContract;
-import com.goyavi.data.Contract.DirectionContract;
-import com.goyavi.data.Contract.OrientationContract;
-import com.goyavi.data.Contract.SectorContract;
-import com.iia.data.contract.ItemContract;
-import com.iia.data.contract.UserContract;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.iia.data.contract.ItemContract;
+import com.iia.data.contract.UserContract;
 
 public class AppSQLiteOpenHelper extends SQLiteOpenHelper {
 

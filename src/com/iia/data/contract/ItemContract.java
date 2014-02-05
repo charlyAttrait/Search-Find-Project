@@ -6,17 +6,32 @@ import com.iia.searchandfind.AppSQLiteOpenHelper;
 
 public class ItemContract {
 
+	/**
+	 * Helper for the dataBase
+	 */
 	private static AppSQLiteOpenHelper dbHelper;
+	/**
+	 * Instance of the SQLite dataBase
+	 */
 	private static SQLiteDatabase db;
 	
+	/**
+	 * Table name
+	 */
 	public final static String TABLE = "T_ITEM";
 	
+	/**
+	 * Columns for the table with name value
+	 */
 	public final static String COL_ID = "ID_ITEM";
 	public final static String COL_LIBELLE = "LIBELLE";
 	public final static String COL_COORD_ALT = "COORD_ALT";
 	public final static String COL_COORD_LONG = "COORD_LONG";
 	public final static String COL_ID_USER = "ID_USER";
 	
+	/**
+	 * String[] with all columns names
+	 */
 	public final static String[] COLS = { 
 		COL_ID,
 		COL_LIBELLE,
@@ -25,6 +40,9 @@ public class ItemContract {
 		COL_ID_USER
 	};
 	
+	/**
+	 * Query CREATE TABLE
+	 */
 	public final static String SCHEMA = 
 			"CREATE TABLE " + TABLE + " ("
 			+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
