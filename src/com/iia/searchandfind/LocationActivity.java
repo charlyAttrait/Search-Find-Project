@@ -1,126 +1,150 @@
-/**
- * 
- */
 package com.iia.searchandfind;
 
+import android.app.Activity;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.Toast;
 
-/**
- * @author Charly
- *
- */
-public class LocationActivity extends MapActivity implements LocationListener {
-	private MapView mapView;
-	private MapController mc;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
-	private LocationManager lm;
+public class LocationActivity extends Activity implements LocationListener {
 
-	private double latitude;
-	private double longitude;
-	private double altitude;
-	private float accuracy;
-
+	public AppSQLiteOpenHelper dbHelper;
+	public SQLiteDatabase db;
+	
+	private LocationManager myLocationManager;
+	private String provider;
+	
+	public LatLng myLocation;
+	
+	private GoogleMap map;
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_main);
 
-		mapView = (MapView) this.findViewById(R.id.mapView);
-		mapView.setBuiltInZoomControls(true);
+		// Initialize database Helper
+		//dbHelper = new AppSQLiteOpenHelper(MainActivity.this, "MyDb", null, 1);
+		
+		// Get Db instance
+		//db = dbHelper.getWritableDatabase();
+		
+		// ...
+		initilizeMap();
+//		CircleOptions optionsCircle = new CircleOptions();
+//		optionsCircle.center(myLocation);
+//		map.addCircle(optionsCircle);
+		
+		// Get the location manager
+	    myLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    // Define the criteria how to select the location provider -> use
+	    // default
+	    provider = myLocationManager.getBestProvider(new Criteria(), true);
 
-		mc = mapView.getController();
-		mc.setZoom(17);
+//	    // Ask position update
+//	    myLocationManager.requestLocationUpdates(
+//                provider,
+//                10000,
+//                0, 
+//                this);
+//
+//	    // Get the last update location
+//	    //Location location = myLocationManager.getLastKnownLocation(provider);
+//	    
+//	    myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+//		
+//		MarkerOptions options = new MarkerOptions();
+//		
+//	    options.position(myLocation);
+//	    options.title("MyLocation");
+//	    options.snippet("Coucou !");
+//	    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
+//	    
+//	    map.addMarker(options);
+//
+//	    // Move the camera instantly to my current Location with a zoom of 15.
+//	    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
+//
+//	    // Zoom in, animating the camera.
+//	    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-		if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
-			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,
-					this);
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0,
-				this);
-	}
-
+	
+    /**
+     * function to load map. If map is not created it will create it for you
+     * */
+    private void initilizeMap() {
+        if (map == null) {
+            map = ((MapFragment) getFragmentManager().findFragmentById(
+                    R.id.fragment_map)).getMap();
+ 
+            // check if map is created successfully or not
+            if (map == null) {
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! unable to create maps", Toast.LENGTH_SHORT)
+                        .show();
+            }
+    		map.setMyLocationEnabled(true);
+            map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        }
+    }
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause() {
+		// TODO Auto-generated method stub
 		super.onPause();
-		lm.removeUpdates(this);
+		myLocationManager.removeUpdates(this);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myLocationManager.requestLocationUpdates(provider, 400, 1, this);
 	}
 
 	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 
-	/**
-	 * Method called where user location is update 
-	 * @param location : new location
-	 * Allowed to get informations (altitude, longitude, precision(in meters) )
-	 */
 	@Override
 	public void onLocationChanged(Location location) {
-		latitude = location.getLatitude();
-		longitude = location.getLongitude();
-		altitude = location.getAltitude();
-		accuracy = location.getAccuracy();
-
-		String msg = String.format(
-				getResources().getString(R.string.new_location), latitude,
-				longitude, altitude, accuracy);
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+		// TODO Auto-generated method stub
+		myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 	}
 
-	/**
-	 * Method called where location source is disabled (GPS, 3G..etc). 
-	 * @param provider : name of source disabled
-	 */
 	@Override
 	public void onProviderDisabled(String provider) {
-		String msg = String.format(
-				getResources().getString(R.string.provider_disabled), provider);
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Disabled provider " + provider,
+		        Toast.LENGTH_SHORT).show();
 	}
-
-	/**
-	 * Method called where location source is enabled (GPS, 3G..etc). 
-	 * @param provider : name of source enabled
-	 */
 	@Override
 	public void onProviderEnabled(String provider) {
-		String msg = String.format(
-				getResources().getString(R.string.provider_enabled), provider);
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Enabled new provider " + provider,
+		        Toast.LENGTH_SHORT).show();
 	}
-
-	/**
-	 * Method called where status of the source has changed 
-	 * 3 Status enabled : OUT_OF_SERVICE, TEMPORARILY_UNAVAILABLE, AVAILABLE.
-	 */
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		String newStatus = "";
-		switch (status) {
-		case LocationProvider.OUT_OF_SERVICE:
-			newStatus = "OUT_OF_SERVICE";
-			break;
-		case LocationProvider.TEMPORARILY_UNAVAILABLE:
-			newStatus = "TEMPORARILY_UNAVAILABLE";
-			break;
-		case LocationProvider.AVAILABLE:
-			newStatus = "AVAILABLE";
-			break;
-		}
-		String msg = String.format(
-				getResources().getString(R.string.provider_disabled), provider,
-				newStatus);
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		// TODO Auto-generated method stub
 	}
 
 }

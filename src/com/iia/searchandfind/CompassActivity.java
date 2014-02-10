@@ -1,11 +1,14 @@
 package com.iia.searchandfind;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -25,6 +28,9 @@ public class CompassActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
  
     TextView tvHeading;
+    
+    private LatLng myLocation;
+    private LatLng toLocation;
  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,9 @@ public class CompassActivity extends Activity implements SensorEventListener {
  
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        
+        myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
+        toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
 	}
 
 	@Override
@@ -58,9 +67,9 @@ public class CompassActivity extends Activity implements SensorEventListener {
  
     @Override
     public void onSensorChanged(SensorEvent event) {
- 
         // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[0]);
+        //float degree = Math.round(event.values[0]);
+    	float degree = CalculDegree.ReturnDegree(myLocation, toLocation);
  
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
  
@@ -81,7 +90,6 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // Start the animation
         image.startAnimation(ra);
         currentDegree = -degree;
- 
     }
  
     @Override
