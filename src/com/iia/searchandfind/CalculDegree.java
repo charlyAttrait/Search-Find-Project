@@ -11,8 +11,8 @@ public class CalculDegree {
 	public static float ReturnDegree(LatLng from, LatLng to) {
 		// Calcul angle in radians
 		float angleRadian = (float) Math.atan2(
-				from.latitude - to.latitude, 
-				from.longitude - to.longitude);
+				to.latitude - from.latitude, 
+				to.longitude - from.longitude);
 		// Convert angle in degree
 		float angleDegree = (float) (angleRadian * (180 / Math.PI));
 		

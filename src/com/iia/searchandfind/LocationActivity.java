@@ -11,9 +11,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationActivity extends Activity implements LocationListener {
 
@@ -23,7 +27,7 @@ public class LocationActivity extends Activity implements LocationListener {
 	private LocationManager myLocationManager;
 	private String provider;
 	
-	public LatLng myLocation;
+	public LatLng myLocation = new LatLng(48.06323018966061, -0.8115211129188538);
 	
 	private GoogleMap map;
 	
@@ -40,9 +44,6 @@ public class LocationActivity extends Activity implements LocationListener {
 		
 		// ...
 		initilizeMap();
-//		CircleOptions optionsCircle = new CircleOptions();
-//		optionsCircle.center(myLocation);
-//		map.addCircle(optionsCircle);
 		
 		// Get the location manager
 	    myLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -50,32 +51,36 @@ public class LocationActivity extends Activity implements LocationListener {
 	    // default
 	    provider = myLocationManager.getBestProvider(new Criteria(), true);
 
-//	    // Ask position update
-//	    myLocationManager.requestLocationUpdates(
-//                provider,
-//                10000,
-//                0, 
-//                this);
-//
-//	    // Get the last update location
-//	    //Location location = myLocationManager.getLastKnownLocation(provider);
-//	    
-//	    myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-//		
-//		MarkerOptions options = new MarkerOptions();
-//		
-//	    options.position(myLocation);
-//	    options.title("MyLocation");
-//	    options.snippet("Coucou !");
-//	    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
-//	    
-//	    map.addMarker(options);
-//
-//	    // Move the camera instantly to my current Location with a zoom of 15.
-//	    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
-//
-//	    // Zoom in, animating the camera.
-//	    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+	    // Ask position update
+	    myLocationManager.requestLocationUpdates(
+                provider,
+                10000,
+                0, 
+                this);
+
+	    // Get the last update location
+	    Location location = myLocationManager.getLastKnownLocation(provider);
+	    
+	    myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+		
+		MarkerOptions options = new MarkerOptions();
+		
+	    options.position(myLocation);
+	    options.title("MyLocation");
+	    options.snippet("Coucou !");
+	    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
+	    
+	    map.addMarker(options);
+
+	    // Move the camera instantly to my current Location with a zoom of 15.
+	    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
+
+	    // Zoom in, animating the camera.
+	    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+	    
+		CircleOptions optionsCircle = new CircleOptions();
+		optionsCircle.center(myLocation);
+		map.addCircle(optionsCircle);
 	}
 	
     /**
