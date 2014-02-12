@@ -216,11 +216,12 @@ public class ItemManager {
 	public static boolean LibelleExist(String libelle) {
 		// boolean to send
 		boolean exist = false;
+		ArrayList<Item> items = GetItems(0);
 		
 		// Browse items in dataBase
-		for (Item item : GetItems(0)) {
+		for (Item item : items) {
 			// if libelle is already used
-			if (item.getLibelle() == libelle) {
+			if (item.getLibelle().equals(libelle)) {
 				// Change state of boolean exist
 				exist = true;
 				break;

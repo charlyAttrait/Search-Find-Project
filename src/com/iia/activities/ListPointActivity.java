@@ -106,5 +106,6 @@ public class ListPointActivity extends Activity {
 			
 			return view;
 		}
+		
 	}
 }

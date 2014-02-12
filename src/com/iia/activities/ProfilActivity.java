@@ -28,10 +28,7 @@ public class ProfilActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				
-				Intent intent = new Intent(ProfilActivity.this,
-            			HomeActivity.class);
-            	
-            	startActivity(intent);
+				finish();
 				}
 		});
         

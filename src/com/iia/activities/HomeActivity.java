@@ -1,10 +1,13 @@
 package com.iia.activities;
 
+import com.iia.data.Classes.User;
+import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -21,11 +24,13 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
-    	Bundle bundle = getIntent().getExtras();
-    	String name = bundle.getString("passUser");
-    	
+		// get sharedPreferences to get idUser authentified
+        SharedPreferences settings = this.getSharedPreferences("settings", this.MODE_PRIVATE);
+        // get user with the id save in preferences
+        User user = new UserManager(this).GetUserByArgument(settings.getInt("IDUser", 0), "");
+        
     	TextView tvName = (TextView) this.findViewById(R.id.user);
-    	tvName.setText(name);
+    	tvName.setText(user.getPrenom());
 		
 		Button btnPartager = (Button) this.findViewById(R.id.share);
 		Button btnProfil = (Button) this.findViewById(R.id.profil);

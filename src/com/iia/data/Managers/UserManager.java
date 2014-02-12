@@ -65,7 +65,7 @@ public class UserManager {
 		
 		try {
 			// Open SQLite connection
-			//open();
+			open();
 			
 			// Execute the query and get the id created
 			idUser = (int) db.insert(UserContract.TABLE, null, content);
@@ -177,11 +177,12 @@ public class UserManager {
 	public static boolean LoginExist(String login) {
 		// boolean to send
 		boolean exist = false;
+		ArrayList<User> users = GetUsers();
 		
 		// Browse users in dataBase
-		for (User user : GetUsers()) {
+		for (User user : users) {
 			// if login is already used
-			if (user.getLogin() == login) {
+			if (user.getLogin().equals(login)) {
 				// Change state of boolean exist
 				exist = true;
 				break;
@@ -205,7 +206,7 @@ public class UserManager {
 			// if argument is ID and the id of user browse is the same than id send
 			// or argument is login and the login of user browse is the same than login send
 			if ((id != 0 && DBuser.getId() == id) ||
-					(login != "" && DBuser.getLogin() == login)) {
+					(!login.equals("") && DBuser.getLogin().equals(login))) {
 				// set DBUser in the instance of user to return
 				user = DBuser;
 				break;
