@@ -25,6 +25,7 @@ public class UserManager {
 	 */
 	public UserManager(Context context) {
 		dbHelper = new AppSQLiteOpenHelper(context, "MyDb", null, 1);
+		open();
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class UserManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// Execute the query and get the id created
 			idUser = (int) db.insert(UserContract.TABLE, null, content);
@@ -71,7 +72,7 @@ public class UserManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 		return idUser;
 	}
@@ -96,7 +97,7 @@ public class UserManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// Execute the query
 			db.update(UserContract.TABLE, content, whereClause, whereArgs);
@@ -105,7 +106,7 @@ public class UserManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 	}
 	
@@ -122,7 +123,7 @@ public class UserManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// cursor of the select query
 			Cursor c = db.query(UserContract.TABLE, 
@@ -161,7 +162,7 @@ public class UserManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 		return users;
 	}

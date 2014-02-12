@@ -55,7 +55,10 @@ public class ListPointActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				
-				finish();
+				Intent intent = new Intent(ListPointActivity.this,
+            			HomeActivity.class);
+            	
+            	startActivity(intent);
 				}
 		});
 	}

@@ -1,9 +1,12 @@
 package com.iia.searchandfind;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.iia.activities.HomeActivity;
+import com.iia.activities.ProfilActivity;
 
 import android.app.Activity;
 import android.app.LocalActivityManager;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,6 +14,8 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -47,6 +52,23 @@ public class CompassActivity extends Activity implements SensorEventListener {
         
         myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
         toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
+        
+        
+        ImageView ivBack = (ImageView) this.findViewById(R.id.back);
+        
+        ivBack.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				Intent intent = new Intent(CompassActivity.this,
+            			HomeActivity.class);
+            	
+            	startActivity(intent);
+				}
+		});
+        
+        
 	}
 
 	@SuppressWarnings("deprecation")

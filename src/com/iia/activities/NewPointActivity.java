@@ -41,9 +41,9 @@ public class NewPointActivity extends Activity {
         adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             	
-            	/*User user = new User("Flo", "B", "test", "1234");
+            	User user = new User("BREMAND", "Florian", "test", "ok");
             	Item item = new Item("testpoint", 0, 0, user);
-            	ItemManager.ADDItem(item);*/
+            	ItemManager.ADDItem(item);
             	
             	Intent intent = new Intent(NewPointActivity.this,
             			CompassActivity.class);

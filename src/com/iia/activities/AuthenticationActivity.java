@@ -37,14 +37,17 @@ public class AuthenticationActivity extends Activity {
         final View alertDialogView = factory.inflate(
         		R.layout.activity_authentication, null);
         
-        final TextView login = (TextView) alertDialogView.findViewById(R.id.login);
-        final TextView password = (TextView) alertDialogView.findViewById(R.id.password);
+        final TextView login = (TextView) alertDialogView.findViewById(
+        													R.id.login);
+        final TextView password = (TextView) alertDialogView.findViewById(
+        													R.id.password);
  
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
  
         adb.setView(alertDialogView);
         adb.setTitle("Authentication");
         adb.setIcon(android.R.drawable.ic_dialog_alert);
+        adb.setCancelable(false);
  
         
         // Button create
@@ -53,6 +56,19 @@ public class AuthenticationActivity extends Activity {
             	
             	Intent intent = new Intent(AuthenticationActivity.this,
             			NewUserActivity.class);
+            	
+            	intent.putExtra("passUser", login.getText().toString());
+            	intent.putExtra("passPass", login.getText().toString());
+            	
+				/*SharedPreferences settings = AuthenticationActivity.this.
+						getSharedPreferences(
+            			"passUser", Context.MODE_WORLD_READABLE);
+				
+				String value = settings.getString("passUser", login.getText().toString());
+				
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString("passUser", login.getText().toString());
+				editor.commit();*/
             	
             	startActivity(intent);
           } });
@@ -90,6 +106,12 @@ public class AuthenticationActivity extends Activity {
             		Toast.makeText(getBaseContext(),
         					"User don't exist".toString(),
         					Toast.LENGTH_LONG).show();
+            		
+            		Intent intent = new Intent(
+        					AuthenticationActivity.this,
+        					AuthenticationActivity.class);
+            		
+            		startActivity(intent);
             	}
 				
           } });

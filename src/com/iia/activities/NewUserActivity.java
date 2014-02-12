@@ -20,45 +20,53 @@ public class NewUserActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
-        
-        final EditText etLastName = (EditText) this.findViewById(
-        		R.id.lastname);
-        final EditText etFirstName = (EditText) this.findViewById(
-        		R.id.firstname);
-        final EditText etLogin = (EditText) this.findViewById(
-        		R.id.login);
-        final EditText etPassword = (EditText) this.findViewById(
-        		R.id.password);
-        
-     
+             
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(
         		R.layout.activity_newuser, null);
+        
+        final UserManager usermanager = new UserManager(this);
+        
+        final EditText etLastName = (EditText) alertDialogView.findViewById(
+        		R.id.lastname);
+        final EditText etFirstName = (EditText) alertDialogView.findViewById(
+        		R.id.firstname);
+        final EditText etLogin = (EditText) alertDialogView.findViewById(
+        		R.id.login);
+        final EditText etPassword = (EditText) alertDialogView.findViewById(
+        		R.id.password);
  
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
  
         adb.setView(alertDialogView);
         adb.setTitle("Insert your informations");
         adb.setIcon(android.R.drawable.ic_dialog_alert);
+        adb.setCancelable(false);
  
         
         // Button ok
         adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-            /*	User user = new User(
-						etLastName.getText().toString(),
-						etFirstName.getText().toString(),
-						etLogin.getText().toString(),
-						etPassword.getText().toString()
-						);
+            @SuppressWarnings("static-access")
+			public void onClick(DialogInterface dialog, int which) {
             	
-            	UserManager.ADDUser(user);*/
+            	// Save EditText in a String variable
+            	String ln = etLastName.getText().toString();
+            	String fn = etFirstName.getText().toString();
+            	String log = etLogin.getText().toString();
+            	String pass = etPassword.getText().toString();
+            	
+            	User user = new User(ln, fn, log, pass);
+            	
+            	usermanager.ADDUser(user);
             	
             	
             	Intent intent = new Intent(NewUserActivity.this,
-            			ProfilActivity.class);
+            			HomeActivity.class);
             	startActivity(intent);
+            	
+            	Toast.makeText(NewUserActivity.this,
+    					"User add".toString(),
+    					Toast.LENGTH_LONG).show();
           } });
         
         // Button x

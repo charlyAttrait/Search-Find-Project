@@ -27,6 +27,7 @@ public class ItemManager {
 	 */
 	public ItemManager(Context context) {
 		dbHelper = new AppSQLiteOpenHelper(context, "MyDb", null, 1);
+		open();
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class ItemManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// Execute the query and get the id created
 			idItem = (int) db.insert(ItemContract.TABLE, null, content);
@@ -73,7 +74,7 @@ public class ItemManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 		return idItem;
 	}
@@ -98,7 +99,7 @@ public class ItemManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// Execute the query
 			db.update(ItemContract.TABLE, content, whereClause, whereArgs);
@@ -107,7 +108,7 @@ public class ItemManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 	}
 
@@ -123,7 +124,7 @@ public class ItemManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// Execute the query
 			db.delete(ItemContract.TABLE, whereClause, whereArgs);
@@ -132,7 +133,7 @@ public class ItemManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 	}
 	
@@ -162,7 +163,7 @@ public class ItemManager {
 		
 		try {
 			// Open SQLite connection
-			open();
+			//open();
 			
 			// cursor of the select query
 			Cursor c = db.query(ItemContract.TABLE, 
@@ -202,7 +203,7 @@ public class ItemManager {
 			// TODO: handle exception
 		} finally {
 			// finally close the connection
-			close();
+			//close();
 		}
 		return items;
 	}
