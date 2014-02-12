@@ -82,7 +82,7 @@ public class User {
 	/**
 	 * Constructors
 	 */
-	private User() {
+	public User() {
 		super();
 	}
 	

@@ -82,7 +82,7 @@ public class Item {
 	/**
 	 * Constructors
 	 */
-	private Item() {
+	public Item() {
 		super();
 	}
 	

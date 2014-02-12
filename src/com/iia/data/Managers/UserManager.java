@@ -21,14 +21,14 @@ public class UserManager {
 	private static SQLiteDatabase db;
 	
 	/**
-	 * Cosntructor
+	 * Constructor
 	 */
 	public UserManager(Context context) {
 		dbHelper = new AppSQLiteOpenHelper(context, "MyDb", null, 1);
 	}
 
 	/**
-	 * Methodes
+	 * Methods
 	 */
 	/**
 	 * Open dataBase connection
