@@ -152,7 +152,7 @@ public class ItemManager {
 		// WHERE Argument " WHERE .. = arg "
 		String[] whereArgs = { String.valueOf(idUser) };
 		// WHERE Clause " WHERE clause = .. "
-		String whereClause = ItemContract.COL_ID_USER + " = ";
+		String whereClause = ItemContract.COL_ID_USER + " = ?";
 		
 		// in the case of idUser = 0, delete clause WHERE
 		//		query will load every items in dataBase

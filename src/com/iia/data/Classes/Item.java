@@ -7,8 +7,8 @@ public class Item {
 	 */
 	private int id;
 	private String libelle;
-	private int coord_Lat;
-	private int coord_Long;
+	private double coord_Lat;
+	private double coord_Long;
 	private User user;
 	
 	/**
@@ -43,26 +43,26 @@ public class Item {
 	/**
 	 * @return the coord_Lat
 	 */
-	public int getCoord_Lat() {
+	public double getCoord_Lat() {
 		return coord_Lat;
 	}
 	/**
 	 * @param coord_lAT the coord_lAT to set
 	 */
-	public void setCoord_Alt(int coord_Lat) {
+	public void setCoord_Lat(double coord_Lat) {
 		this.coord_Lat = coord_Lat;
 	}
 	
 	/**
 	 * @return the coord_Long
 	 */
-	public int getCoord_Long() {
+	public double getCoord_Long() {
 		return coord_Long;
 	}
 	/**
 	 * @param coord_Long the coord_Long to set
 	 */
-	public void setCoord_Long(int coord_Long) {
+	public void setCoord_Long(double coord_Long) {
 		this.coord_Long = coord_Long;
 	}
 	
@@ -92,7 +92,7 @@ public class Item {
 	 * @param coord_Long
 	 * @param user
 	 */
-	public Item(String libelle, int coord_Lat, int coord_Long, User user) {
+	public Item(String libelle, double coord_Lat, double coord_Long, User user) {
 		super();
 		this.libelle = libelle;
 		this.coord_Lat = coord_Lat;

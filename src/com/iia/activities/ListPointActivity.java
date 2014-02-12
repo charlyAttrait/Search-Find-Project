@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
+import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
 
 public class ListPointActivity extends Activity {
@@ -52,6 +56,9 @@ public class ListPointActivity extends Activity {
         // set onClickListener to control button and imageButton
         btnNew.setOnClickListener(onBtnNewClick);
         ivBack.setOnClickListener(onIvBackClick);
+        
+        //set onItemClickListener to select an item
+        lvPoint.setOnItemClickListener(onItemClick);
 	}
 	
 	// OnClickListener for the button NewItem
@@ -73,6 +80,18 @@ public class ListPointActivity extends Activity {
 		public void onClick(View v) {
 			// return to back activity
 			finish();
+		}
+	};
+	
+	// onItemClickListener : user select a row in the list
+	private OnItemClickListener onItemClick = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// get the item selected in listView
+			Item item = (Item) lvPoint.getItemAtPosition(position);
+			
 		}
 	};
 	

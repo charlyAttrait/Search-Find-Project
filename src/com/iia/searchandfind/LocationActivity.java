@@ -30,12 +30,6 @@ public class LocationActivity extends Activity implements LocationListener {
 	private String provider;
 	
 	public static LatLng myLocation;
-	/**
-	 * @return the myLocation
-	 */
-	public static LatLng getMyLocation() {
-		return myLocation;
-	}
 	
 	private GoogleMap map;
 	

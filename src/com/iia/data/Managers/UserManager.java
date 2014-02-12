@@ -95,7 +95,7 @@ public class UserManager {
 		// WHERE Argument " WHERE .. = arg "
 		String[] whereArgs = { String.valueOf(idUser) };
 		// WHERE Clause " WHERE clause = .. "
-		String whereClause = UserContract.COL_ID + " = ";
+		String whereClause = UserContract.COL_ID + " = ?";
 		
 		try {
 			// Open SQLite connection

@@ -63,7 +63,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // Get item to SearchANDFind
         Item item = (Item) this.getIntent().getExtras().get("item");
         // get my current location
-        myLocation = new LocationActivity().getMyLocation();
+        myLocation = new LocationActivity().myLocation;
         // define the destination point
         toLocation = new LatLng(item.getCoord_Lat(), item.getCoord_Long());
         
@@ -138,7 +138,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	@Override
     	protected Long doInBackground(URL... params) {
     		// update myLocation by myCurrentLocation
-    		myLocation = new LocationActivity().getMyLocation();
+    		myLocation = new LocationActivity().myLocation;
             return null;
     	}
 
