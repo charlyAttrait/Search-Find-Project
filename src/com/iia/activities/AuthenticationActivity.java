@@ -1,27 +1,18 @@
 package com.iia.activities;
 
 
-import com.iia.data.CLASS.User;
-import com.iia.data.Managers.UserManager;
-import com.iia.data.contract.UserContract;
-import com.iia.searchandfind.AppSQLiteOpenHelper;
-import com.iia.searchandfind.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.iia.data.Managers.UserManager;
+import com.iia.searchandfind.R;
 
 public class AuthenticationActivity extends Activity {
 

@@ -25,7 +25,7 @@ public class ItemContract {
 	 */
 	public final static String COL_ID = "ID_ITEM";
 	public final static String COL_LIBELLE = "LIBELLE";
-	public final static String COL_COORD_ALT = "COORD_ALT";
+	public final static String COL_COORD_LAT = "COORD_LAT";
 	public final static String COL_COORD_LONG = "COORD_LONG";
 	public final static String COL_ID_USER = "ID_USER";
 	
@@ -35,7 +35,7 @@ public class ItemContract {
 	public final static String[] COLS = { 
 		COL_ID,
 		COL_LIBELLE,
-		COL_COORD_ALT,
+		COL_COORD_LAT,
 		COL_COORD_LONG,
 		COL_ID_USER
 	};
@@ -47,7 +47,7 @@ public class ItemContract {
 			"CREATE TABLE " + TABLE + " ("
 			+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ COL_LIBELLE + " NVARCHAR(50) NOT NULL,"
-			+ COL_COORD_ALT + " INTEGER NOT NULL," 
+			+ COL_COORD_LAT + " INTEGER NOT NULL," 
 			+ COL_COORD_LONG + " INTEGER NOT NULL,"
 			+ COL_ID_USER + " INTEGER NOT NULL REFERENCES "
 			+ UserContract.TABLE + "(" + UserContract.COL_ID + ")"

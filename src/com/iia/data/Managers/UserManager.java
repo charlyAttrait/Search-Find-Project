@@ -7,8 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.iia.data.CLASS.User;
+import com.iia.data.Classes.User;
 import com.iia.data.contract.UserContract;
 import com.iia.searchandfind.AppSQLiteOpenHelper;
 
@@ -17,6 +18,7 @@ public class UserManager {
 	/**
 	 * Attributes
 	 */
+	private static final String TAG = "UserManager";
 	private static AppSQLiteOpenHelper dbHelper;
 	private static SQLiteDatabase db;
 	
@@ -69,7 +71,7 @@ public class UserManager {
 			idUser = (int) db.insert(UserContract.TABLE, null, content);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
@@ -103,7 +105,7 @@ public class UserManager {
 			db.update(UserContract.TABLE, content, whereClause, whereArgs);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
@@ -159,7 +161,7 @@ public class UserManager {
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();

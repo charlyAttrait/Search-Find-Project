@@ -1,5 +1,6 @@
 package com.iia.searchandfind;
 
+import java.net.URL;
 import com.google.android.gms.maps.model.LatLng;
 import com.iia.activities.HomeActivity;
 import com.iia.activities.ProfilActivity;
@@ -11,13 +12,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+
+import android.os.SystemClock;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,42 +38,51 @@ public class CompassActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
  
     TextView tvHeading;
+    TextView distanceTXT;
     
-    private LatLng myLocation;
-    private LatLng toLocation;
+    Chronometer chrono;
+    ThreadChronometer chronoThread;
+    
+    private LatLng myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
+    private LatLng toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_compass);
 
+		// image representation of the compass
         image = (ImageView) findViewById(R.id.imageViewCompass);
  
         // TextView that will tell the user what degree is he heading
         tvHeading = (TextView) findViewById(R.id.tvHeading);
+        // TextView shown distance of the Location
+        distanceTXT = (TextView) findViewById(R.id.distance);
  
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+//        myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
+//        toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
+//        
+//        
+//        ImageView ivBack = (ImageView) this.findViewById(R.id.back);
+//        
+//        ivBack.setOnClickListener(new OnClickListener() {
+//			
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				
+//				Intent intent = new Intent(CompassActivity.this,
+//            			HomeActivity.class);
+//            	
+//            	startActivity(intent);
+//				}
+//		});
         
-        myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
-        toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
-        
-        
-        ImageView ivBack = (ImageView) this.findViewById(R.id.back);
-        
-        ivBack.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
-				Intent intent = new Intent(CompassActivity.this,
-            			HomeActivity.class);
-            	
-            	startActivity(intent);
-				}
-		});
-        
-        
+        chrono = (Chronometer) findViewById(R.id.chronometer);
+        chronoThread = new ThreadChronometer();
+        chronoThread.execute();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -90,10 +104,19 @@ public class CompassActivity extends Activity implements SensorEventListener {
  
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // get the angle around the z-axis rotated
-        //float degree = Math.round(event.values[0]);
-    	float degree = CalculDegree.ReturnDegree(myLocation, toLocation);
- 
+    	// angle degree to move
+    	float degree;
+    	
+    	// calcul of the fixed angle point to the location
+    	orientation = CalculDegree.ReturnDegree(myLocation, toLocation);
+    	// calcul of the distance between the 2 locations
+    	distance = CalculDegree.GetDistance(myLocation, toLocation);
+    	// Indicate distance to the point
+    	distanceTXT.setText("Distance : " + distance);
+    	
+    	// calcul the degree to rotate : angle around the z-axis rotated
+    	// -  fixed angle point to the location
+		degree = Math.round(event.values[0]) - orientation;
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
  
         // create a rotation animation (reverse turn degree degrees)
@@ -118,5 +141,54 @@ public class CompassActivity extends Activity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // not in use
+    }
+    
+    private class ThreadChronometer extends AsyncTask<URL, Integer, Long> {
+
+    	/* (non-Javadoc)
+    	 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
+    	 */
+    	@Override
+    	protected Long doInBackground(URL... params) {
+    		// TODO Auto-generated method stub
+            return null;
+    	}
+
+    	/* (non-Javadoc)
+    	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+    	 */
+    	@Override
+    	protected void onPostExecute(Long result) {
+    		
+    	}
+
+    	/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onCancelled()
+		 */
+		@Override
+		protected void onCancelled() {
+			// Stop the chronometer
+			chrono.stop();
+		}
+
+		/* (non-Javadoc)
+    	 * @see android.os.AsyncTask#onPreExecute()
+    	 */
+    	@Override
+    	protected void onPreExecute() {
+    		// Define chronometer format
+    		chrono.setBase(SystemClock.elapsedRealtime());
+    		// Start the chronometer
+            chrono.start();
+    	}
+
+    	/* (non-Javadoc)
+    	 * @see android.os.AsyncTask#onProgressUpdate(java.lang.Object[])
+    	 */
+    	@Override
+    	protected void onProgressUpdate(Integer... values) {
+    		
+    	}
+
     }
 }

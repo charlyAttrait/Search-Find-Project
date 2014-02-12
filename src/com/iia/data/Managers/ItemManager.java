@@ -7,11 +7,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.iia.data.CLASS.Item;
-import com.iia.data.CLASS.User;
+import com.iia.data.Classes.Item;
 import com.iia.data.contract.ItemContract;
-import com.iia.data.contract.UserContract;
 import com.iia.searchandfind.AppSQLiteOpenHelper;
 
 public class ItemManager {
@@ -19,6 +18,7 @@ public class ItemManager {
 	/**
 	 * Attributes
 	 */
+	private static final String TAG = "ItemManager";
 	private static AppSQLiteOpenHelper dbHelper;
 	private static SQLiteDatabase db;
 	
@@ -57,7 +57,7 @@ public class ItemManager {
 		// instance of ContentValues to add item in dataBase
 		ContentValues content = new ContentValues();
 		content.put(ItemContract.COL_LIBELLE, item.getLibelle());
-		content.put(ItemContract.COL_COORD_ALT, item.getCoord_Alt());
+		content.put(ItemContract.COL_COORD_LAT, item.getCoord_Lat());
 		content.put(ItemContract.COL_COORD_LONG, item.getCoord_Long());
 		content.put(ItemContract.COL_ID_USER, item.getUser().getId());
 		
@@ -71,7 +71,7 @@ public class ItemManager {
 			idItem = (int) db.insert(ItemContract.TABLE, null, content);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
@@ -88,7 +88,7 @@ public class ItemManager {
 		// instance of ContentValues to update item in dataBase
 		ContentValues content = new ContentValues();
 		content.put(ItemContract.COL_LIBELLE, item.getLibelle());
-		content.put(ItemContract.COL_COORD_ALT, item.getCoord_Alt());
+		content.put(ItemContract.COL_COORD_LAT, item.getCoord_Lat());
 		content.put(ItemContract.COL_COORD_LONG, item.getCoord_Long());
 		content.put(ItemContract.COL_ID_USER, item.getUser().getId());
 		
@@ -105,7 +105,7 @@ public class ItemManager {
 			db.update(ItemContract.TABLE, content, whereClause, whereArgs);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
@@ -130,7 +130,7 @@ public class ItemManager {
 			db.delete(ItemContract.TABLE, whereClause, whereArgs);
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
@@ -183,7 +183,7 @@ public class ItemManager {
 							c.getString(c.getColumnIndex(
 									ItemContract.COL_LIBELLE)), 
 							c.getInt(c.getColumnIndex(
-									ItemContract.COL_COORD_ALT)), 
+									ItemContract.COL_COORD_LAT)), 
 							c.getInt(c.getColumnIndex(
 									ItemContract.COL_COORD_LONG)), 
 							UserManager.GetUserByArgument(
@@ -200,7 +200,7 @@ public class ItemManager {
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			Log.e(TAG, e.getMessage());
 		} finally {
 			// finally close the connection
 			//close();
