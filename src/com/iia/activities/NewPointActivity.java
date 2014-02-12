@@ -1,11 +1,5 @@
 package com.iia.activities;
 
-import com.iia.data.CLASS.Item;
-import com.iia.data.CLASS.User;
-import com.iia.data.Managers.ItemManager;
-import com.iia.searchandfind.CompassActivity;
-import com.iia.searchandfind.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,7 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.iia.searchandfind.R;
 
 public class NewPointActivity extends Activity {
 

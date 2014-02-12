@@ -1,6 +1,5 @@
 package com.iia.activities;
 
-import com.iia.searchandfind.CompassActivity;
 import com.iia.searchandfind.R;
 
 import android.os.Bundle;

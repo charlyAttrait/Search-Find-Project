@@ -2,27 +2,24 @@ package com.iia.searchandfind;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
-
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationActivity extends Activity implements LocationListener {
 
@@ -32,7 +29,13 @@ public class LocationActivity extends Activity implements LocationListener {
 	private LocationManager myLocationManager;
 	private String provider;
 	
-	public LatLng myLocation;
+	public static LatLng myLocation;
+	/**
+	 * @return the myLocation
+	 */
+	public static LatLng getMyLocation() {
+		return myLocation;
+	}
 	
 	private GoogleMap map;
 	
@@ -49,40 +52,37 @@ public class LocationActivity extends Activity implements LocationListener {
 		
 		// ...
 		initilizeMap();
-//		CircleOptions optionsCircle = new CircleOptions();
-//		optionsCircle.center(myLocation);
-//		map.addCircle(optionsCircle);
 		
+		// get the googlePlayServices state
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		  
 		  if (resultCode == ConnectionResult.SUCCESS){
-		   Toast.makeText(getApplicationContext(), 
-		     "isGooglePlayServicesAvailable SUCCESS", 
-		     Toast.LENGTH_LONG).show();
-		  } else{
-			  //GooglePlayServicesUtil.getErrorDialog(resultCode, this, RQS_GooglePlayServices);
+			  Toast.makeText(getApplicationContext(), 
+					  "isGooglePlayServicesAvailable SUCCESS", 
+					  Toast.LENGTH_LONG).show();
 		  }
 		
 		// Get the location manager
 	    myLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	    // Define the criteria how to select the location provider -> use
-	    // default
+	    // Define the criteria how to select the better location provider
 	    provider = myLocationManager.getBestProvider(new Criteria(), true);
 
 	    // Get the last update location
 	    Location location = myLocationManager.getLastKnownLocation(provider);
-//	    location = map.getMyLocation();
 	    
 	    if (location != null) {
+	    	// set new coordinate of myLocation
 	    	myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 			
+	    	// set a marker on my position
 			MarkerOptions options = new MarkerOptions();
 			
 		    options.position(myLocation);
 		    options.title("MyLocation");
-		    options.snippet("Coucou !");
+		    options.snippet("Hey! It's Me !");
 		    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
 		    
+		    // add the marker on the map
 		    map.addMarker(options);
 
 		    // Move the camera instantly to my current Location with a zoom of 15.
@@ -90,23 +90,18 @@ public class LocationActivity extends Activity implements LocationListener {
 
 		    // Zoom in, animating the camera.
 		    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-		    
-			CircleOptions optionsCircle = new CircleOptions();
-			optionsCircle.center(myLocation);
-			map.addCircle(optionsCircle);
 		}
 
-	    myLocationManager.removeUpdates(this);
 	    // Ask position update
-//	    myLocationManager.requestLocationUpdates(
-//                provider,
-//                100,
-//                0, 
-//                this);
+	    myLocationManager.requestLocationUpdates(
+                provider,
+                100,
+                0, 
+                this);
 	}
 	
     /**
-     * function to load map. If map is not created it will create it for you
+     * function to load map. If map is not created it will be create
      * */
     private void initilizeMap() {
         if (map == null) {
@@ -119,7 +114,9 @@ public class LocationActivity extends Activity implements LocationListener {
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT)
                         .show();
             }
+            // set the button GetMyLocation() visible
     		map.setMyLocationEnabled(true);
+    		// set the map type
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         }
     }
@@ -130,7 +127,7 @@ public class LocationActivity extends Activity implements LocationListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		//myLocationManager.removeUpdates(this);
+		myLocationManager.removeUpdates(this);
 	}
 
 	/* (non-Javadoc)
@@ -152,6 +149,29 @@ public class LocationActivity extends Activity implements LocationListener {
 	public void onLocationChanged(Location location) {
 		myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 		System.out.println(myLocation.latitude + " " + myLocation.longitude);
+		
+		if (location != null) {
+	    	myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+			
+			MarkerOptions options = new MarkerOptions();
+			
+		    options.position(myLocation);
+		    options.title("MyLocation");
+		    options.snippet("Hey! It's Me !");
+		    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
+		    
+		    map.addMarker(options);
+
+		    // Move the camera instantly to my current Location with a zoom of 15.
+		    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
+
+		    // Zoom in, animating the camera.
+		    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+		    
+			CircleOptions optionsCircle = new CircleOptions();
+			optionsCircle.center(myLocation);
+			map.addCircle(optionsCircle);
+		}
 	}
 
 	@Override
@@ -166,8 +186,7 @@ public class LocationActivity extends Activity implements LocationListener {
 	}
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		String temp = "";
-		temp = "stop";
+		
 	}
 
 }

@@ -4,10 +4,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class CalculDegree {
 
-	public CalculDegree() {
-		
-	}
-	
 	public static float ReturnDegree(LatLng from, LatLng to) {
 		// Calcul angle in radians
 		float angleRadian = (float) Math.atan2(

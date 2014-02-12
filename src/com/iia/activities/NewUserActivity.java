@@ -1,6 +1,6 @@
 package com.iia.activities;
 
-import com.iia.data.CLASS.User;
+import com.iia.data.Classes.User;
 import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
 
