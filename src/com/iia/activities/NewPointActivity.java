@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.iia.data.Classes.Item;
+import com.iia.data.Classes.User;
+import com.iia.data.Managers.ItemManager;
 import com.iia.searchandfind.R;
 
 public class NewPointActivity extends Activity {

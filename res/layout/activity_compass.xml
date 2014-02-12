@@ -16,7 +16,6 @@
     android:layout_centerVertical="true"
     android:src="@drawable/img_compass" />
 
-<<<<<<< HEAD
 <TextView
     android:id="@+id/tvHeading"
     android:layout_width="wrap_content"
@@ -26,7 +25,7 @@
     android:layout_marginTop="24dp"
     android:text="Heading: 0.0"
     android:textAppearance="?android:attr/textAppearanceLarge" />
-=======
+
 <Chronometer
     android:id="@+id/chronometer"
     android:layout_width="wrap_content"
@@ -46,6 +45,5 @@
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="25dp"
     android:text="TextView" />
->>>>>>> 522961b51304efa1d471b5cd1e9a6ef8bba241ac
     
 </RelativeLayout>
