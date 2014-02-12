@@ -1,13 +1,17 @@
 package com.iia.searchandfind;
 
 import java.net.URL;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.animation.Animation;
@@ -15,8 +19,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class CompassActivity extends Activity implements SensorEventListener {
 
@@ -35,10 +37,8 @@ public class CompassActivity extends Activity implements SensorEventListener {
     Chronometer chrono;
     ThreadChronometer chronoThread;
     
-    private LatLng myLocation = new LatLng(48.06322768007788, -0.8115197718143463);
-    private LatLng toLocation = new LatLng(48.063320892459174, -0.8114419877529144);
-    private float orientation;
-    private float distance;
+    private LatLng myLocation = new LatLng(48.06323305771986, -0.8115626871585846);
+    private LatLng toLocation = new LatLng(48.06301974415755, -0.8109001815319061);
  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         chronoThread.execute();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
     protected void onResume() {
         super.onResume();
@@ -92,15 +93,13 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	// calcul the degree to rotate : angle around the z-axis rotated
     	// -  fixed angle point to the location
 		degree = Math.round(event.values[0]) - orientation;
-
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
-        
+ 
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
                 currentDegree,
                 -degree,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f);
  

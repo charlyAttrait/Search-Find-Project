@@ -33,13 +33,43 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
+		<activity
+            android:name="com.iia.activities.ListPointActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
         <activity
-            android:name="com.iia.searchandfind.LocationActivity"
+            android:name="com.iia.activities.NewPointActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.iia.activities.NewUserActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.iia.activities.ProfilActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="com.iia.activities.HomeActivity"
+            android:label="@string/app_name" >
+        </activity>
+		
+		<activity
+            android:name="com.iia.activities.AuthenticationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+		
+        <activity
+            android:name="com.iia.searchandfind.LocationActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.iia.searchandfind.CompassActivity"

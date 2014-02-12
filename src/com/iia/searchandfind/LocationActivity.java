@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -21,10 +22,7 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationActivity extends Activity implements LocationListener {
 
@@ -34,7 +32,7 @@ public class LocationActivity extends Activity implements LocationListener {
 	private LocationManager myLocationManager;
 	private String provider;
 	
-	public LatLng myLocation = new LatLng(48.06323018966061, -0.8115211129188538);
+	public LatLng myLocation;
 	
 	private GoogleMap map;
 	
@@ -51,6 +49,9 @@ public class LocationActivity extends Activity implements LocationListener {
 		
 		// ...
 		initilizeMap();
+//		CircleOptions optionsCircle = new CircleOptions();
+//		optionsCircle.center(myLocation);
+//		map.addCircle(optionsCircle);
 		
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		  
@@ -102,7 +103,6 @@ public class LocationActivity extends Activity implements LocationListener {
 //                100,
 //                0, 
 //                this);
-
 	}
 	
     /**
