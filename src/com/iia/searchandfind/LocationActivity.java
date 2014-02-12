@@ -2,15 +2,22 @@ package com.iia.searchandfind;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -45,42 +52,57 @@ public class LocationActivity extends Activity implements LocationListener {
 		// ...
 		initilizeMap();
 		
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+		  
+		  if (resultCode == ConnectionResult.SUCCESS){
+		   Toast.makeText(getApplicationContext(), 
+		     "isGooglePlayServicesAvailable SUCCESS", 
+		     Toast.LENGTH_LONG).show();
+		  } else{
+			  //GooglePlayServicesUtil.getErrorDialog(resultCode, this, RQS_GooglePlayServices);
+		  }
+		
 		// Get the location manager
 	    myLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    // Define the criteria how to select the location provider -> use
 	    // default
 	    provider = myLocationManager.getBestProvider(new Criteria(), true);
 
-	    // Ask position update
-	    myLocationManager.requestLocationUpdates(
-                provider,
-                10000,
-                0, 
-                this);
-
 	    // Get the last update location
 	    Location location = myLocationManager.getLastKnownLocation(provider);
+//	    location = map.getMyLocation();
 	    
-	    myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-		
-		MarkerOptions options = new MarkerOptions();
-		
-	    options.position(myLocation);
-	    options.title("MyLocation");
-	    options.snippet("Coucou !");
-	    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
-	    
-	    map.addMarker(options);
+	    if (location != null) {
+	    	myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+			
+			MarkerOptions options = new MarkerOptions();
+			
+		    options.position(myLocation);
+		    options.title("MyLocation");
+		    options.snippet("Coucou !");
+		    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
+		    
+		    map.addMarker(options);
 
-	    // Move the camera instantly to my current Location with a zoom of 15.
-	    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
+		    // Move the camera instantly to my current Location with a zoom of 15.
+		    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
 
-	    // Zoom in, animating the camera.
-	    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-	    
-		CircleOptions optionsCircle = new CircleOptions();
-		optionsCircle.center(myLocation);
-		map.addCircle(optionsCircle);
+		    // Zoom in, animating the camera.
+		    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+		    
+			CircleOptions optionsCircle = new CircleOptions();
+			optionsCircle.center(myLocation);
+			map.addCircle(optionsCircle);
+		}
+
+	    myLocationManager.removeUpdates(this);
+	    // Ask position update
+//	    myLocationManager.requestLocationUpdates(
+//                provider,
+//                100,
+//                0, 
+//                this);
+
 	}
 	
     /**
@@ -107,9 +129,8 @@ public class LocationActivity extends Activity implements LocationListener {
 	 */
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
-		myLocationManager.removeUpdates(this);
+		//myLocationManager.removeUpdates(this);
 	}
 
 	/* (non-Javadoc)
@@ -117,39 +138,36 @@ public class LocationActivity extends Activity implements LocationListener {
 	 */
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
-		myLocationManager.requestLocationUpdates(provider, 400, 1, this);
+		myLocationManager.requestLocationUpdates(provider, 100, 0, this);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
 		myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+		System.out.println(myLocation.latitude + " " + myLocation.longitude);
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Disabled provider " + provider,
 		        Toast.LENGTH_SHORT).show();
 	}
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Enabled new provider " + provider,
 		        Toast.LENGTH_SHORT).show();
 	}
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		String temp = "";
+		temp = "stop";
 	}
 
 }
