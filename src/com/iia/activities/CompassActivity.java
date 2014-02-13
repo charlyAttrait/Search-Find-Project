@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Chronometer;
@@ -47,6 +48,8 @@ public class CompassActivity extends Activity implements SensorEventListener {
     private LatLng myLocation;
     private LatLng toLocation;
  
+    private UtilLocationManager utilLocationManager;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,10 +68,12 @@ public class CompassActivity extends Activity implements SensorEventListener {
         
         // Get item to SearchANDFind
         Item item = (Item) this.getIntent().getExtras().getSerializable(BUNDLE_ITEM);
+        
+        utilLocationManager = new UtilLocationManager(CompassActivity.this,
+				(MapFragment) getFragmentManager().
+				findFragmentById(R.id.fragment_map));
         // get my current location
-        myLocation = new UtilLocationManager(CompassActivity.this,
-						(MapFragment) getFragmentManager().
-						findFragmentById(R.id.fragment_map)).myLocation;
+        myLocation = utilLocationManager.myLocation;
         // define the destination point
         toLocation = new LatLng(item.getCoord_Lat(), item.getCoord_Long());
         
@@ -84,6 +89,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
+        utilLocationManager.onResume();
     }
 
     @Override
@@ -91,10 +97,15 @@ public class CompassActivity extends Activity implements SensorEventListener {
         super.onPause();
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
+        utilLocationManager.onPause();
     }
  
     @Override
     public void onSensorChanged(SensorEvent event) {
+    	// update my current location
+    	utilLocationManager.onResume();
+    	myLocation = utilLocationManager.myLocation;
+    	
     	// angle degree to move
     	float degree;
     	
@@ -102,14 +113,15 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	orientation = CalculDegree.ReturnDegree(myLocation, toLocation);
     	// calcul of the distance between the 2 locations
     	distance = CalculDegree.GetDistance(myLocation, toLocation);
-    	// Indicate distance to the point
-    	distanceTXT.setText("Distance : " + distance);
     	
     	// calcul the degree to rotate : angle around the z-axis rotated
     	// -  fixed angle point to the location
 		degree = Math.round(event.values[0]) - orientation;
+		
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
- 
+    	// Indicate distance to the point
+    	distanceTXT.setText("Distance : " + distance);
+    	
         // create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
                 currentDegree,
@@ -143,9 +155,8 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	@Override
     	protected Long doInBackground(URL... params) {
     		// update myLocation by myCurrentLocation
-    		myLocation = new UtilLocationManager(CompassActivity.this, 
-    				(MapFragment) getFragmentManager().
-					findFragmentById(R.id.fragment_map)).myLocation;
+    		utilLocationManager.onResume();
+    		Log.d("LOCATION", myLocation.toString());
             return null;
     	}
 

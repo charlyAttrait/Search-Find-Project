@@ -18,7 +18,7 @@ public class CalculDegree {
 	
 	public static float GetDistance(LatLng from, LatLng to ) {
 		return (float) Math.sqrt(
-				from.latitude*to.latitude + 
-				from.longitude*to.longitude);
+				from.latitude * to.latitude + 
+				from.longitude * to.longitude);
 	}
 }

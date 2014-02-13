@@ -22,7 +22,6 @@ public class AuthenticationActivity extends Activity {
 	private TextView login;
 	private TextView password;
 	
-	@SuppressWarnings("static-access")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
