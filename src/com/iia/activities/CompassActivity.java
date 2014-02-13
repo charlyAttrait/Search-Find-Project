@@ -16,16 +16,19 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.iia.data.Classes.Item;
 import com.iia.searchandfind.CalculDegree;
-import com.iia.searchandfind.LocationActivity;
+import com.iia.searchandfind.UtilLocationManager;
 import com.iia.searchandfind.R;
 
 public class CompassActivity extends Activity implements SensorEventListener {
 
     // define the display assembly compass picture
     private ImageView image;
+    
+    public final static String BUNDLE_ITEM = "item";
     
     // record the compass picture angle turned
     private float currentDegree = 0f;
@@ -61,9 +64,11 @@ public class CompassActivity extends Activity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         
         // Get item to SearchANDFind
-        Item item = (Item) this.getIntent().getExtras().get("item");
+        Item item = (Item) this.getIntent().getExtras().getSerializable(BUNDLE_ITEM);
         // get my current location
-        myLocation = new LocationActivity().myLocation;
+        myLocation = new UtilLocationManager(CompassActivity.this,
+						(MapFragment) getFragmentManager().
+						findFragmentById(R.id.fragment_map)).myLocation;
         // define the destination point
         toLocation = new LatLng(item.getCoord_Lat(), item.getCoord_Long());
         
@@ -138,7 +143,9 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	@Override
     	protected Long doInBackground(URL... params) {
     		// update myLocation by myCurrentLocation
-    		myLocation = new LocationActivity().myLocation;
+    		myLocation = new UtilLocationManager(CompassActivity.this, 
+    				(MapFragment) getFragmentManager().
+					findFragmentById(R.id.fragment_map)).myLocation;
             return null;
     	}
 

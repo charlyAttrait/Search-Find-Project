@@ -47,4 +47,10 @@
     android:layout_marginBottom="25dp"
     android:text="TextView" />
     
+<fragment 
+      android:id="@+id/fragment_map"
+      android:name="com.google.android.gms.maps.MapFragment"
+      android:layout_width="0dp"
+      android:layout_height="0dp"/>
+
 </RelativeLayout>

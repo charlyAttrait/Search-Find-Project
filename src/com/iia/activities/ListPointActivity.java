@@ -1,5 +1,6 @@
 package com.iia.activities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapFragment;
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
 import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
+import com.iia.searchandfind.UtilLocationManager;
 
 public class ListPointActivity extends Activity {
 
@@ -92,6 +95,11 @@ public class ListPointActivity extends Activity {
 			// get the item selected in listView
 			Item item = (Item) lvPoint.getItemAtPosition(position);
 			
+			Intent intent = new Intent(ListPointActivity.this,
+					CompassActivity.class);
+			// send the item to CompassLocationActivity
+    		intent.putExtra(CompassActivity.BUNDLE_ITEM, item);
+    		startActivity(intent);
 		}
 	};
 	

@@ -2,7 +2,6 @@ package com.iia.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,13 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.iia.data.Classes.Item;
-import com.iia.data.Classes.User;
 import com.iia.data.Managers.ItemManager;
 import com.iia.data.Managers.UserManager;
-import com.iia.searchandfind.LocationActivity;
 import com.iia.searchandfind.R;
+import com.iia.searchandfind.UtilLocationManager;
 
 public class NewPointActivity extends Activity {
 
@@ -63,28 +62,38 @@ public class NewPointActivity extends Activity {
         	if (!newPoint.getText().toString().equals("")) {
         		
         		// if item with this name already exist
-        		if (!itemManager.LibelleExist(
-        				newPoint.getText().toString())) {
+        		if (!itemManager.LibelleExist(newPoint.getText().toString())) {
         			
-        			LocationActivity locationActivity = 
-        					new LocationActivity();
-        			// get my current location
-					LatLng location = locationActivity.myLocation;
-					
-					// get sharedPreferences to get idUser authentified
-			        SharedPreferences settings = 
-			        		NewPointActivity.this.getSharedPreferences(
-			        		"settings", NewPointActivity.this.MODE_PRIVATE);
-					
-					Item item = new Item();
-					item.setLibelle(newPoint.getText().toString());
-					item.setCoord_Lat(location.latitude);
-					item.setCoord_Long(location.longitude);
-					item.setUser(new UserManager(NewPointActivity.this).
-							GetUserByArgument(settings.getInt("IDUser", 0), 
-									""));
-					
-					item.setId(itemManager.ADDItem(item));
+        			UtilLocationManager utilLocationManager = 
+        					new UtilLocationManager(NewPointActivity.this,
+        							(MapFragment) getFragmentManager().
+        							findFragmentById(R.id.fragment_map));;
+        			
+        			// check the current location is not null
+        			if (utilLocationManager.myLocation != null) {
+        				// get my current location
+    					LatLng location = utilLocationManager.myLocation;
+    					
+    					// get sharedPreferences to get idUser authentified
+    			        SharedPreferences settings = 
+    			        		NewPointActivity.this.getSharedPreferences(
+    			        		"settings", NewPointActivity.this.MODE_PRIVATE);
+    					
+    					Item item = new Item();
+    					item.setLibelle(newPoint.getText().toString());
+    					item.setCoord_Lat(location.latitude);
+    					item.setCoord_Long(location.longitude);
+    					item.setUser(new UserManager(NewPointActivity.this).
+    							GetUserByArgument(settings.getInt("IDUser", 0), 
+    									""));
+    					
+    					item.setId(itemManager.ADDItem(item));
+					} else {
+						Toast.makeText(NewPointActivity.this,
+								"item cannot be saved because no location found".
+								toString(),
+								Toast.LENGTH_LONG).show();
+					}
 				} else {
 					Toast.makeText(NewPointActivity.this,
 							"item with this name already exist".toString(),

@@ -47,8 +47,8 @@ public class ItemContract {
 			"CREATE TABLE " + TABLE + " ("
 			+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ COL_LIBELLE + " NVARCHAR(50) NOT NULL,"
-			+ COL_COORD_LAT + " INTEGER NOT NULL," 
-			+ COL_COORD_LONG + " INTEGER NOT NULL,"
+			+ COL_COORD_LAT + " DOUBLE NOT NULL," 
+			+ COL_COORD_LONG + " DOUBLE NOT NULL,"
 			+ COL_ID_USER + " INTEGER NOT NULL REFERENCES "
 			+ UserContract.TABLE + "(" + UserContract.COL_ID + ")"
 			+ ")";

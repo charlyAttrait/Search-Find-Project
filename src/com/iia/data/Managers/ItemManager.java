@@ -182,9 +182,9 @@ public class ItemManager {
 					item = new Item(
 							c.getString(c.getColumnIndex(
 									ItemContract.COL_LIBELLE)), 
-							c.getInt(c.getColumnIndex(
+							c.getDouble(c.getColumnIndex(
 									ItemContract.COL_COORD_LAT)), 
-							c.getInt(c.getColumnIndex(
+							c.getDouble(c.getColumnIndex(
 									ItemContract.COL_COORD_LONG)), 
 							UserManager.GetUserByArgument(
 									c.getInt(c.getColumnIndex(
