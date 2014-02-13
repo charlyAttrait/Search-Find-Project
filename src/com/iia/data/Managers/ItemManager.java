@@ -95,7 +95,7 @@ public class ItemManager {
 		// WHERE Argument " WHERE .. = arg "
 		String[] whereArgs = { String.valueOf(idItem) };
 		// WHERE Clause " WHERE clause = .. "
-		String whereClause = ItemContract.COL_ID + " = ";
+		String whereClause = ItemContract.COL_ID + " = ?";
 		
 		try {
 			// Open SQLite connection
@@ -120,7 +120,7 @@ public class ItemManager {
 		// WHERE Argument " WHERE .. = arg "
 		String[] whereArgs = { String.valueOf(idItem) };
 		// WHERE Clause " WHERE clause = .. "
-		String whereClause = ItemContract.COL_ID + " = ";
+		String whereClause = ItemContract.COL_ID + " = ?";
 		
 		try {
 			// Open SQLite connection
