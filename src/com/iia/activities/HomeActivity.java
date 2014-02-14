@@ -1,23 +1,19 @@
 package com.iia.activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.iia.data.Classes.User;
 import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.view.View.OnClickListener;
-
 public class HomeActivity extends Activity {
-	
-//	public final static String BUNDLE_USER = "login";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,6 @@ public class HomeActivity extends Activity {
 		btnPartager.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				
 				final Intent MessIntent = new Intent(Intent.ACTION_SEND);
 				MessIntent.setType("text/plain");
@@ -54,8 +49,6 @@ public class HomeActivity extends Activity {
 		btnProfil.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
 				Intent intent = new Intent(HomeActivity.this,
 						ProfilActivity.class);
         		
@@ -66,8 +59,6 @@ public class HomeActivity extends Activity {
 		btnPoint.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
 				Intent intent = new Intent(HomeActivity.this,
 						ListPointActivity.class);
         		
@@ -78,16 +69,12 @@ public class HomeActivity extends Activity {
 		tvOut.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
-				// Login / password = null
 				Intent intent = new Intent(HomeActivity.this,
 						AuthenticationActivity.class);
         		
         		startActivity(intent);
-				}
+			}
 		});
-		
 		
 	}
 

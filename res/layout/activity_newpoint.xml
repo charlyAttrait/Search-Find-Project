@@ -10,6 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
+        android:inputType="textCapWords"
         android:hint="Name" />
     <!--
     <fragment

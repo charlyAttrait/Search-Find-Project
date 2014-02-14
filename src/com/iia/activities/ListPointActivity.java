@@ -116,19 +116,19 @@ public class ListPointActivity extends Activity {
 	private OnItemLongClickListener onItemLongClick = 
 			new OnItemLongClickListener() {
 
-				@Override
-				public boolean onItemLongClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					// save the item selected
-					selectedItem = position;
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view,
+				int position, long id) {
+			// save the item selected
+			selectedItem = position;
 
-				    registerForContextMenu(parent); 
-				    openContextMenu(parent);
-				    unregisterForContextMenu(parent);
+		    registerForContextMenu(parent); 
+		    openContextMenu(parent);
+		    unregisterForContextMenu(parent);
 
-					return true;
-				}
-			};
+			return true;
+		}
+	};
 	
 	
 	/* 

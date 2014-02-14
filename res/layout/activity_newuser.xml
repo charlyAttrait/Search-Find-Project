@@ -19,6 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
+        android:inputType="textCapWords"
         android:hint="Last name" >
         <requestFocus />
         </EditText>
@@ -30,6 +31,7 @@
         android:layout_alignLeft="@+id/lastname"
         android:layout_below="@+id/lastname"
         android:ems="10"
+        android:inputType="textCapWords"
         android:hint="First name" />
 
     <EditText

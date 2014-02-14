@@ -16,6 +16,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -114,31 +115,38 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	// calcul of the distance between the 2 locations
     	distance = CalculDegree.getDistance(myLocation, toLocation);
     	
-    	// calcul the degree to rotate : angle around the z-axis rotated
-    	// -  fixed angle point to the location
-		degree = Math.round(event.values[0]) - orientation;
-		
-        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
-    	// Indicate distance to the point
-    	distanceTXT.setText("Distance : " + distance);
-    	
-        // create a rotation animation (reverse turn degree degrees)
-        RotateAnimation ra = new RotateAnimation(
-                currentDegree,
-                -degree,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
- 
-        // how long the animation will take place
-        ra.setDuration(210);
- 
-        // set the animation after the end of the reservation status
-        ra.setFillAfter(true);
- 
-        // Start the animation
-        image.startAnimation(ra);
-        currentDegree = -degree;
+    	if (distance <= 0.1) {
+			chrono.stop();
+			Toast.makeText(getBaseContext(), "You're arrived !!!".toString(),
+					Toast.LENGTH_LONG).show();
+		} else {
+
+	    	// calcul the degree to rotate : angle around the z-axis rotated
+	    	// -  fixed angle point to the location
+			degree = Math.round(event.values[0]) - orientation;
+			
+	        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
+	    	// Indicate distance to the point
+	    	distanceTXT.setText("Distance : " + distance);
+	    	
+	        // create a rotation animation (reverse turn degree degrees)
+	        RotateAnimation ra = new RotateAnimation(
+	                currentDegree,
+	                -degree,
+	                Animation.RELATIVE_TO_SELF, 0.5f,
+	                Animation.RELATIVE_TO_SELF,
+	                0.5f);
+	 
+	        // how long the animation will take place
+	        ra.setDuration(210);
+	 
+	        // set the animation after the end of the reservation status
+	        ra.setFillAfter(true);
+	 
+	        // Start the animation
+	        image.startAnimation(ra);
+	        currentDegree = -degree;
+		}
     }
  
     @Override
@@ -193,7 +201,6 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	 */
     	@Override
     	protected void onProgressUpdate(Integer... values) {
-    		
     	}
 
     }
