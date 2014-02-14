@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class CalculDegree {
 
-	public static float ReturnDegree(LatLng from, LatLng to) {
+	public static float returnDegree(LatLng from, LatLng to) {
 		// Calcul angle in radians
 		float angleRadian = (float) Math.atan2(
 				from.latitude - to.latitude, 
@@ -16,7 +16,7 @@ public class CalculDegree {
 		return angleDegree;
 	}
 	
-	public static float GetDistance(LatLng from, LatLng to ) {
+	public static float getDistance(LatLng from, LatLng to ) {
 		float distance;
 		distance = (float) distanceVolOiseauEntre2PointsAvecPrécision(
 				Math.toRadians(from.latitude), 

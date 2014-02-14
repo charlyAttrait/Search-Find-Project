@@ -1,6 +1,5 @@
 package com.iia.activities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,31 +10,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.MapFragment;
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
-import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.R;
-import com.iia.searchandfind.UtilLocationManager;
 
 public class ListPointActivity extends Activity {
 
@@ -103,7 +96,6 @@ public class ListPointActivity extends Activity {
 		}
 	};
 	
-	// onItemClickListener : user select a row in the list
 	// onItemClickListener to get selected item in the list
 	private OnItemClickListener onItemClick = new OnItemClickListener() {
 
@@ -146,7 +138,16 @@ public class ListPointActivity extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		    case CMD_EDIT: // command edit item
-		        
+		    	// get item selected in listView
+				Item selected = (Item) lvPoint.
+						getItemAtPosition(selectedItem);
+				
+		    	Intent intent = new Intent(ListPointActivity.this,
+						NewPointActivity.class);
+		    	
+				// send the item to NewPointActivity
+	    		intent.putExtra(NewPointActivity.BUNDLE_ITEM, selected);
+	    		startActivity(intent);
 		    	break;
 		    case CMD_DELETE: // command delete item
 		    	AlertDialog.Builder adb = new AlertDialog.Builder(this);

@@ -21,14 +21,31 @@ import com.iia.searchandfind.UtilLocationManager;
 
 public class NewPointActivity extends Activity {
 
+	public final static String BUNDLE_ITEM = "item";
+	
 	private EditText newPoint;
 	private ItemManager itemManager;
+	
+	// boolean to know if activity is to create or edit a point
+	private boolean creationMode;
+	// in case of edition, it is the item to edit
+	private Item editItem;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listpoint);
       
+        // get the state of the activity : creation/edition
+        if (this.getIntent().getExtras() != null) {
+			creationMode = false;
+			editItem = (Item) this.getIntent().getExtras().
+					getSerializable(BUNDLE_ITEM);
+		} else {
+			creationMode = true;
+			editItem = null;
+		}
+        
         // set the itemManager
         itemManager = new ItemManager(this);
         
@@ -43,12 +60,17 @@ public class NewPointActivity extends Activity {
         adb.setView(alertDialogView);
         adb.setTitle("New point");
         adb.setIcon(android.R.drawable.ic_dialog_alert);
- 
+
         // Button ok
         adb.setPositiveButton("OK", onAdbOKButton);
         // Button x
         adb.setNegativeButton("x", onAdbxButton);
  
+        // in case of edition
+        if (!creationMode) {
+			newPoint.setText(editItem.getLibelle());
+		}
+        
         adb.show();
 	}
 
@@ -79,15 +101,26 @@ public class NewPointActivity extends Activity {
     			        		NewPointActivity.this.getSharedPreferences(
     			        		"settings", NewPointActivity.this.MODE_PRIVATE);
     					
-    					Item item = new Item();
-    					item.setLibelle(newPoint.getText().toString());
-    					item.setCoord_Lat(location.latitude);
-    					item.setCoord_Long(location.longitude);
-    					item.setUser(new UserManager(NewPointActivity.this).
-    							GetUserByArgument(settings.getInt("IDUser", 0), 
-    									""));
+    			        if (creationMode) { // creation of item
+    			        	Item item = new Item();
+        					item.setLibelle(newPoint.getText().toString());
+        					item.setCoord_Lat(location.latitude);
+        					item.setCoord_Long(location.longitude);
+        					item.setUser(new UserManager(NewPointActivity.this).
+        							GetUserByArgument(settings.getInt("IDUser", 0), 
+        									""));
+        					
+        					item.setId(itemManager.ADDItem(item));
+						} else { // edition of item
+							// change values
+							editItem.setLibelle(newPoint.getText().toString());
+							editItem.setCoord_Lat(location.latitude);
+							editItem.setCoord_Long(location.longitude);
+							// update item in db
+							new ItemManager(NewPointActivity.this).
+							UpdateItem(editItem.getId(), editItem);
+						}
     					
-    					item.setId(itemManager.ADDItem(item));
 					} else {
 						Toast.makeText(NewPointActivity.this,
 								"item cannot be saved because no location found".

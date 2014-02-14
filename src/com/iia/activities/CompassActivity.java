@@ -110,9 +110,9 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	float degree;
     	
     	// calcul of the fixed angle point to the location
-    	orientation = CalculDegree.ReturnDegree(myLocation, toLocation);
+    	orientation = CalculDegree.returnDegree(myLocation, toLocation);
     	// calcul of the distance between the 2 locations
-    	distance = CalculDegree.GetDistance(myLocation, toLocation);
+    	distance = CalculDegree.getDistance(myLocation, toLocation);
     	
     	// calcul the degree to rotate : angle around the z-axis rotated
     	// -  fixed angle point to the location
