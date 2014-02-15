@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
 import com.iia.data.Managers.UserManager;
+import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 import com.iia.searchandfind.UtilLocationManager;
 
@@ -47,7 +48,7 @@ public class NewPointActivity extends Activity {
 		}
         
         // set the itemManager
-        itemManager = new ItemManager(this);
+        itemManager = MainActivity.getItemManager();
         
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(
@@ -84,7 +85,7 @@ public class NewPointActivity extends Activity {
         	if (!newPoint.getText().toString().equals("")) {
         		
         		// if item with this name already exist
-        		if (!itemManager.LibelleExist(newPoint.getText().toString())) {
+        		if (!itemManager.libelleExist(newPoint.getText().toString())) {
         			
         			UtilLocationManager utilLocationManager = 
         					new UtilLocationManager(NewPointActivity.this,
@@ -104,21 +105,21 @@ public class NewPointActivity extends Activity {
     			        if (creationMode) { // creation of item
     			        	Item item = new Item();
         					item.setLibelle(newPoint.getText().toString());
-        					item.setCoord_Lat(location.latitude);
-        					item.setCoord_Long(location.longitude);
-        					item.setUser(new UserManager(NewPointActivity.this).
-        							GetUserByArgument(settings.getInt("IDUser", 0), 
+        					item.setCoordLat(location.latitude);
+        					item.setCoordLong(location.longitude);
+        					item.setUser(MainActivity.getUserManager().
+        							getUserByArgument(settings.getInt("IDUser", 0), 
         									""));
         					
-        					item.setId(itemManager.ADDItem(item));
+        					item.setId(itemManager.addItem(item));
 						} else { // edition of item
 							// change values
 							editItem.setLibelle(newPoint.getText().toString());
-							editItem.setCoord_Lat(location.latitude);
-							editItem.setCoord_Long(location.longitude);
+							editItem.setCoordLat(location.latitude);
+							editItem.setCoordLong(location.longitude);
 							// update item in db
-							new ItemManager(NewPointActivity.this).
-							UpdateItem(editItem.getId(), editItem);
+							MainActivity.getItemManager().
+							updateItem(editItem.getId(), editItem);
 						}
     					
 					} else {

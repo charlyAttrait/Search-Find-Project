@@ -9,8 +9,8 @@ public class Item implements Serializable {
 	 */
 	private int id;
 	private String libelle;
-	private double coord_Lat;
-	private double coord_Long;
+	private double coordLat;
+	private double coordLong;
 	private User user;
 	
 	/**
@@ -45,27 +45,27 @@ public class Item implements Serializable {
 	/**
 	 * @return the coord_Lat
 	 */
-	public double getCoord_Lat() {
-		return coord_Lat;
+	public double getCoordLat() {
+		return coordLat;
 	}
 	/**
 	 * @param coord_lAT the coord_lAT to set
 	 */
-	public void setCoord_Lat(double coord_Lat) {
-		this.coord_Lat = coord_Lat;
+	public void setCoordLat(double coordLat) {
+		this.coordLat = coordLat;
 	}
 	
 	/**
 	 * @return the coord_Long
 	 */
-	public double getCoord_Long() {
-		return coord_Long;
+	public double getCoordLong() {
+		return coordLong;
 	}
 	/**
 	 * @param coord_Long the coord_Long to set
 	 */
-	public void setCoord_Long(double coord_Long) {
-		this.coord_Long = coord_Long;
+	public void setCoordLong(double coordLong) {
+		this.coordLong = coordLong;
 	}
 	
 	/**
@@ -94,11 +94,11 @@ public class Item implements Serializable {
 	 * @param coord_Long
 	 * @param user
 	 */
-	public Item(String libelle, double coord_Lat, double coord_Long, User user) {
+	public Item(String libelle, double coordLat, double coordLong, User user) {
 		super();
 		this.libelle = libelle;
-		this.coord_Lat = coord_Lat;
-		this.coord_Long = coord_Long;
+		this.coordLat = coordLat;
+		this.coordLong = coordLong;
 		this.user = user;
 	}
 	

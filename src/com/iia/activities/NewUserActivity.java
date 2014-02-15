@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.iia.data.Classes.User;
 import com.iia.data.Managers.UserManager;
+import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 
 public class NewUserActivity extends Activity {
@@ -34,7 +35,7 @@ public class NewUserActivity extends Activity {
         final View alertDialogView = factory.inflate(
         		R.layout.activity_newuser, null);
         
-        userManager = new UserManager(this);
+        userManager = MainActivity.getUserManager();
         
         etLastName = (EditText) alertDialogView.findViewById(R.id.lastname);
         etFirstName = (EditText) alertDialogView.findViewById(R.id.firstname);
@@ -71,7 +72,7 @@ public class NewUserActivity extends Activity {
         	User user = new User(ln, fn, log, pass);
         	
         	// add user in db and get his identifier
-        	user.setId(userManager.ADDUser(user));
+        	user.setId(userManager.addUser(user));
         	
 
 			// create a sharedPreferences

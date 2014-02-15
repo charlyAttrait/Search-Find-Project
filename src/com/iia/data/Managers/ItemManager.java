@@ -12,6 +12,7 @@ import android.util.Log;
 import com.iia.data.Classes.Item;
 import com.iia.data.contract.ItemContract;
 import com.iia.searchandfind.AppSQLiteOpenHelper;
+import com.iia.searchandfind.MainActivity;
 
 public class ItemManager {
 
@@ -19,62 +20,42 @@ public class ItemManager {
 	 * Attributes
 	 */
 	private static final String TAG = "ItemManager";
-	private static AppSQLiteOpenHelper dbHelper;
 	private static SQLiteDatabase db;
+	private UserManager userManager;
 	
 	/**
 	 * Cosntructor
 	 */
-	public ItemManager(Context context) {
-		dbHelper = new AppSQLiteOpenHelper(context, "MyDb", null, 1);
-		open();
+	public ItemManager() {
+		db = MainActivity.getDb();
+		userManager = MainActivity.getUserManager();
 	}
 
 	/**
 	 * Methodes
 	 */
-	/**
-	 * Open dataBase connection
-	 * @throws SQLException
-	 */
-	public static void open() throws SQLException {
-		db = dbHelper.getWritableDatabase();
-	}
-	
-	/**
-	 * Close dataBase connection
-	 */
-	public static void close() {
-		dbHelper.close();
-	}
 	
 	/**
 	 * Add item in dataBase
 	 * @param item to add in dataBase
 	 * @return the identifier of this new item
 	 */
-	public static int ADDItem(Item item) {
+	public int addItem(Item item) {
 		// instance of ContentValues to add item in dataBase
 		ContentValues content = new ContentValues();
 		content.put(ItemContract.COL_LIBELLE, item.getLibelle());
-		content.put(ItemContract.COL_COORD_LAT, item.getCoord_Lat());
-		content.put(ItemContract.COL_COORD_LONG, item.getCoord_Long());
+		content.put(ItemContract.COL_COORD_LAT, item.getCoordLat());
+		content.put(ItemContract.COL_COORD_LONG, item.getCoordLong());
 		content.put(ItemContract.COL_ID_USER, item.getUser().getId());
 		
 		int idItem = 0;
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// Execute the query and get the id created
 			idItem = (int) db.insert(ItemContract.TABLE, null, content);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 		return idItem;
 	}
@@ -84,12 +65,12 @@ public class ItemManager {
 	 * @param idItem of the item to update
 	 * @param item with new informations
 	 */
-	public static void UpdateItem(int idItem, Item item) {
+	public void updateItem(int idItem, Item item) {
 		// instance of ContentValues to update item in dataBase
 		ContentValues content = new ContentValues();
 		content.put(ItemContract.COL_LIBELLE, item.getLibelle());
-		content.put(ItemContract.COL_COORD_LAT, item.getCoord_Lat());
-		content.put(ItemContract.COL_COORD_LONG, item.getCoord_Long());
+		content.put(ItemContract.COL_COORD_LAT, item.getCoordLat());
+		content.put(ItemContract.COL_COORD_LONG, item.getCoordLong());
 		content.put(ItemContract.COL_ID_USER, item.getUser().getId());
 		
 		// WHERE Argument " WHERE .. = arg "
@@ -98,17 +79,11 @@ public class ItemManager {
 		String whereClause = ItemContract.COL_ID + " = ?";
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// Execute the query
 			db.update(ItemContract.TABLE, content, whereClause, whereArgs);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 	}
 
@@ -116,24 +91,18 @@ public class ItemManager {
 	 * Delete the item with id = idItem
 	 * @param idItem of the item to delete
 	 */
-	public static void DeleteItem(int idItem) {
+	public void deleteItem(int idItem) {
 		// WHERE Argument " WHERE .. = arg "
 		String[] whereArgs = { String.valueOf(idItem) };
 		// WHERE Clause " WHERE clause = .. "
 		String whereClause = ItemContract.COL_ID + " = ?";
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// Execute the query
 			db.delete(ItemContract.TABLE, whereClause, whereArgs);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 	}
 	
@@ -142,7 +111,7 @@ public class ItemManager {
 	 * @param idUser
 	 * @return a list of items
 	 */
-	public static ArrayList<Item> GetItems(int idUser) {
+	public ArrayList<Item> getItems(int idUser) {
 		// List of items to return
 		ArrayList<Item> items = new ArrayList<Item>();
 		
@@ -162,9 +131,6 @@ public class ItemManager {
 		}
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// cursor of the select query
 			Cursor c = db.query(ItemContract.TABLE, 
 					ItemContract.COLS, 
@@ -186,7 +152,7 @@ public class ItemManager {
 									ItemContract.COL_COORD_LAT)), 
 							c.getDouble(c.getColumnIndex(
 									ItemContract.COL_COORD_LONG)), 
-							UserManager.GetUserByArgument(
+							userManager.getUserByArgument(
 									c.getInt(c.getColumnIndex(
 											ItemContract.COL_ID_USER)), ""));
 					
@@ -201,9 +167,6 @@ public class ItemManager {
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 		return items;
 	}
@@ -213,10 +176,10 @@ public class ItemManager {
 	 * @param item libelle
 	 * @return a boolean inform of the existence of the item libelle
 	 */
-	public static boolean LibelleExist(String libelle) {
+	public boolean libelleExist(String libelle) {
 		// boolean to send
 		boolean exist = false;
-		ArrayList<Item> items = GetItems(0);
+		ArrayList<Item> items = getItems(0);
 		
 		// Browse items in dataBase
 		for (Item item : items) {

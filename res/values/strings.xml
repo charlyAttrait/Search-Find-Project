@@ -9,6 +9,6 @@
         Altitude = %3$s avec une précision de %4$s mètres </string>
     <string name="provider_disabled">The provider %s is now disabled</string>
     <string name="provider_enabled">The provider %s is now enabled</string>
-    
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

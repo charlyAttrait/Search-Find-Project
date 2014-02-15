@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
+import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 
 public class ListPointActivity extends Activity {
@@ -69,7 +70,7 @@ public class ListPointActivity extends Activity {
         SharedPreferences settings = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         
         // get the list of item for the user authentified
-        items = new ItemManager(this).GetItems(settings.getInt("IDUser", 0));
+        items = MainActivity.getItemManager().getItems(settings.getInt("IDUser", 0));
         
         // init adapter for the listView
 		MyAdapter adapter = new MyAdapter(this, R.layout.row_list, items);
@@ -172,8 +173,8 @@ public class ListPointActivity extends Activity {
 								Item selected = (Item) lvPoint.
 										getItemAtPosition(selectedItem);
 								// delete the item in db
-								new ItemManager(ListPointActivity.this).
-									DeleteItem(selected.getId());
+								MainActivity.getItemManager().
+									deleteItem(selected.getId());
 								//refresh listView
 								refreshListView();
 							}

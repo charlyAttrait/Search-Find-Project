@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.iia.data.Classes.User;
 import com.iia.data.Managers.UserManager;
+import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 
 public class HomeActivity extends Activity {
@@ -23,7 +24,7 @@ public class HomeActivity extends Activity {
 		// get sharedPreferences to get idUser authentified
         SharedPreferences settings = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         // get user with the id save in preferences
-        User user = new UserManager(this).GetUserByArgument(settings.getInt("IDUser", 0), "");
+        User user = MainActivity.getUserManager().getUserByArgument(settings.getInt("IDUser", 0), "");
         
     	TextView tvName = (TextView) this.findViewById(R.id.user);
     	tvName.setText(user.getPrenom());

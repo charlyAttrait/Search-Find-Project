@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.iia.data.Classes.User;
 import com.iia.data.Managers.UserManager;
+import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 
 public class AuthenticationActivity extends Activity {
@@ -74,15 +75,15 @@ public class AuthenticationActivity extends Activity {
 		public void onClick(DialogInterface dialog, int which) {
 			String loginValue = login.getText().toString();
 			// instance of userManager to use
-			UserManager manager = new UserManager(AuthenticationActivity.this);
+			UserManager manager = MainActivity.getUserManager();
 			User user = null;
 			
 			// check informations are filled
 			if (!login.getText().toString().equals("") && !password.getText().toString().equals("")) {
 				// if login exist in db
-	        	if (manager.LoginExist(loginValue)) {
+	        	if (manager.loginExist(loginValue)) {
 	        		// get the user with login = loginValue
-	        		user = manager.GetUserByArgument(0, loginValue);
+	        		user = manager.getUserByArgument(0, loginValue);
 	        		
 	        		// check the validity of the password for user
 	        		if (user.getPassword().equals(password.getText().toString())) {
@@ -98,7 +99,7 @@ public class AuthenticationActivity extends Activity {
 						
 						// put the idUser in settings
 						SharedPreferences.Editor editor = settings.edit();
-						editor.putInt("IDUser", manager.GetUserByArgument(0, 
+						editor.putInt("IDUser", manager.getUserByArgument(0, 
 									login.getText().toString()).getId());
 						editor.commit();
 			        	

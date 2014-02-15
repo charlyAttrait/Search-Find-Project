@@ -75,7 +75,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // get my current location
         myLocation = utilLocationManager.myLocation;
         // define the destination point
-        toLocation = new LatLng(item.getCoord_Lat(), item.getCoord_Long());
+        toLocation = new LatLng(item.getCoordLat(), item.getCoordLong());
         
         // Init chronometer and start the thread
         chrono = (Chronometer) findViewById(R.id.chronometer);

@@ -12,6 +12,7 @@ import android.util.Log;
 import com.iia.data.Classes.User;
 import com.iia.data.contract.UserContract;
 import com.iia.searchandfind.AppSQLiteOpenHelper;
+import com.iia.searchandfind.MainActivity;
 
 public class UserManager {
 
@@ -19,41 +20,25 @@ public class UserManager {
 	 * Attributes
 	 */
 	private static final String TAG = "UserManager";
-	private static AppSQLiteOpenHelper dbHelper;
 	private static SQLiteDatabase db;
 	
 	/**
 	 * Constructor
 	 */
-	public UserManager(Context context) {
-		dbHelper = new AppSQLiteOpenHelper(context, "MyDb", null, 1);
-		open();
+	public UserManager() {
+		db = MainActivity.getDb();
 	}
 
 	/**
 	 * Methods
 	 */
-	/**
-	 * Open dataBase connection
-	 * @throws SQLException
-	 */
-	public static void open() throws SQLException {
-		db = dbHelper.getWritableDatabase();
-	}
-	
-	/**
-	 * Close dataBase connection
-	 */
-	public static void close() {
-		dbHelper.close();
-	}
 	
 	/**
 	 * Add user in dataBase
 	 * @param user to add in dataBase
 	 * @return the identifier of this new user
 	 */
-	public static int ADDUser(User user) {
+	public int addUser(User user) {
 		// instance of ContentValues to add user in dataBase
 		ContentValues content = new ContentValues();
 		content.put(UserContract.COL_NOM, user.getNom());
@@ -64,17 +49,11 @@ public class UserManager {
 		int idUser = 0;
 		
 		try {
-			// Open SQLite connection
-			open();
-			
 			// Execute the query and get the id created
 			idUser = (int) db.insert(UserContract.TABLE, null, content);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 		return idUser;
 	}
@@ -84,7 +63,7 @@ public class UserManager {
 	 * @param idUser of the user to update
 	 * @param user with new informations
 	 */
-	public static void UpdateUser(int idUser, User user) {
+	public void updateUser(int idUser, User user) {
 		// instance of ContentValues to update user in dataBase
 		ContentValues content = new ContentValues();
 		content.put(UserContract.COL_NOM, user.getNom());
@@ -98,17 +77,11 @@ public class UserManager {
 		String whereClause = UserContract.COL_ID + " = ?";
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// Execute the query
 			db.update(UserContract.TABLE, content, whereClause, whereArgs);
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 	}
 	
@@ -116,7 +89,7 @@ public class UserManager {
 	 * Get all the users in dataBase
 	 * @return an arrayList of User
 	 */
-	public static ArrayList<User> GetUsers() {
+	public ArrayList<User> getUsers() {
 		// List of users to return
 		ArrayList<User> users = new ArrayList<User>();
 		
@@ -124,9 +97,6 @@ public class UserManager {
 		User user = null;
 		
 		try {
-			// Open SQLite connection
-			//open();
-			
 			// cursor of the select query
 			Cursor c = db.query(UserContract.TABLE, 
 					UserContract.COLS, 
@@ -162,9 +132,6 @@ public class UserManager {
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		} finally {
-			// finally close the connection
-			//close();
 		}
 		return users;
 	}
@@ -174,10 +141,10 @@ public class UserManager {
 	 * @param login
 	 * @return a boolean inform of the existence of the login
 	 */
-	public static boolean LoginExist(String login) {
+	public boolean loginExist(String login) {
 		// boolean to send
 		boolean exist = false;
-		ArrayList<User> users = GetUsers();
+		ArrayList<User> users = getUsers();
 		
 		// Browse users in dataBase
 		for (User user : users) {
@@ -198,11 +165,12 @@ public class UserManager {
 	 * @param login : user login
 	 * @return the user according to argument
 	 */
-	public static User GetUserByArgument(int id, String login) {
+	public User getUserByArgument(int id, String login) {
 		User user = null;
+		ArrayList<User> users = getUsers();
 		
 		// Browse users in dataBase
-		for (User DBuser : GetUsers()) {
+		for (User DBuser : users) {
 			// if argument is ID and the id of user browse is the same than id send
 			// or argument is login and the login of user browse is the same than login send
 			if ((id != 0 && DBuser.getId() == id) ||
