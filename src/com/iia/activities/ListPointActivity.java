@@ -52,6 +52,19 @@ public class ListPointActivity extends Activity {
         ivBack = (ImageView) this.findViewById(R.id.back);
         lvPoint = (ListView) this.findViewById(R.id.listpoint);
         
+        refreshListView();
+        
+        // set onClickListener to control button and imageButton
+        btnNew.setOnClickListener(onBtnNewClick);
+        ivBack.setOnClickListener(onIvBackClick);
+        
+        //set onItemClickListener to select an item
+        lvPoint.setOnItemClickListener(onItemClick);
+        // set onItemLongClickListener to change/delete an item
+        lvPoint.setOnItemLongClickListener(onItemLongClick);
+	}
+	
+	public void refreshListView() {
         // get sharedPreferences to get idUser authentified
         SharedPreferences settings = this.getSharedPreferences("settings", this.MODE_PRIVATE);
         
@@ -63,15 +76,6 @@ public class ListPointActivity extends Activity {
 		
 		// set the adapter to the listView
 		lvPoint.setAdapter(adapter);
-		
-        // set onClickListener to control button and imageButton
-        btnNew.setOnClickListener(onBtnNewClick);
-        ivBack.setOnClickListener(onIvBackClick);
-        
-        //set onItemClickListener to select an item
-        lvPoint.setOnItemClickListener(onItemClick);
-        // set onItemLongClickListener to change/delete an item
-        lvPoint.setOnItemLongClickListener(onItemLongClick);
 	}
 	
 	// OnClickListener for the button NewItem
@@ -84,6 +88,7 @@ public class ListPointActivity extends Activity {
 					NewPointActivity.class);
     		
     		startActivity(intent);
+    		finish();
 		}
 	};
 	// OnClickListener for the imageButton ivBack
@@ -148,6 +153,7 @@ public class ListPointActivity extends Activity {
 				// send the item to NewPointActivity
 	    		intent.putExtra(NewPointActivity.BUNDLE_ITEM, selected);
 	    		startActivity(intent);
+	    		finish();
 		    	break;
 		    case CMD_DELETE: // command delete item
 		    	AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -169,7 +175,7 @@ public class ListPointActivity extends Activity {
 								new ItemManager(ListPointActivity.this).
 									DeleteItem(selected.getId());
 								//refresh listView
-								// ...
+								refreshListView();
 							}
 						});
 		        // Button Cancel
@@ -203,15 +209,7 @@ public class ListPointActivity extends Activity {
 	private static class MyAdapter extends ArrayAdapter<Item> {
 
 		public Context context;
-		/* (non-Javadoc)
-		 * @see android.widget.ArrayAdapter#notifyDataSetChanged()
-		 */
-		@Override
-		public void notifyDataSetChanged() {
-			// TODO Auto-generated method stub
-			super.notifyDataSetChanged();
-		}
-
+	
 		public int resource;
 		public LayoutInflater inflater;
 		

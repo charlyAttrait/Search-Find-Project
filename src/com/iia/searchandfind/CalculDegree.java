@@ -24,7 +24,7 @@ public class CalculDegree {
 				Math.toRadians(to.latitude), 
 				Math.toRadians(to.longitude));
 		
-		distance = (distance * 6366) / 1000;
+		distance = (distance * 6366);
 		return distance;
 	}
 	

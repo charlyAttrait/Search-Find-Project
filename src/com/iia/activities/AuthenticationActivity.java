@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -24,7 +25,11 @@ public class AuthenticationActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        createDialog();
+    }
+
+	// function to create the authentification's dialog
+	public void createDialog() {
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(
         		R.layout.activity_authentication, null);
@@ -33,7 +38,7 @@ public class AuthenticationActivity extends Activity {
         login = (TextView) alertDialogView.findViewById(R.id.login);
         password = (TextView) alertDialogView.findViewById(R.id.password);
  
-        // init a new alertDialog
+		// init a new alertDialog
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
  
         adb.setView(alertDialogView);
@@ -46,8 +51,8 @@ public class AuthenticationActivity extends Activity {
         // Button connexion
         adb.setNegativeButton("OK", onAdbOkButton);
         adb.show();
-    }
-
+	}
+	
 	// onClickListener : happened where user click "Sign Up"
 	private DialogInterface.OnClickListener onAdbSignUpButton = 
 			new DialogInterface.OnClickListener() {
@@ -58,6 +63,7 @@ public class AuthenticationActivity extends Activity {
         			NewUserActivity.class);
 			// Navigate to activity for create a user
         	startActivity(intent);
+        	finish();
 		}
 	};
 	// onClickListener : happened where user click on "OK"
@@ -71,46 +77,49 @@ public class AuthenticationActivity extends Activity {
 			UserManager manager = new UserManager(AuthenticationActivity.this);
 			User user = null;
 			
-			// if login exist in db
-        	if (manager.LoginExist(loginValue)) {
-        		// get the user with login = loginValue
-        		user = manager.GetUserByArgument(0, loginValue);
-        		
-        		// check the validity of the password for user
-        		if (user.getPassword().equals(password.getText().toString())) {
-        			
-        			Intent intent = new Intent(AuthenticationActivity.this,
-    						HomeActivity.class);
-        		
-        			// create a sharedPreferences
-        			//	-> Just save the idUser
-					SharedPreferences settings = AuthenticationActivity.this.
-							getSharedPreferences("settings", 
-		        			Context.MODE_WORLD_READABLE);
-					
-					// put the idUser in settings
-					SharedPreferences.Editor editor = settings.edit();
-					editor.putInt("IDUser", manager.GetUserByArgument(0, 
-								login.getText().toString()).getId());
-					editor.commit();
-		        	
-        			// Navigate to next activity
-        			startActivity(intent);
-        		}
-        		else {
-        			Toast.makeText(getBaseContext(), "Fail password".toString(),
-        					Toast.LENGTH_LONG).show();
-        		}
-        		
-        	} else {
-        		Toast.makeText(getBaseContext(), "User don't exist".toString(),
+			// check informations are filled
+			if (!login.getText().toString().equals("") && !password.getText().toString().equals("")) {
+				// if login exist in db
+	        	if (manager.LoginExist(loginValue)) {
+	        		// get the user with login = loginValue
+	        		user = manager.GetUserByArgument(0, loginValue);
+	        		
+	        		// check the validity of the password for user
+	        		if (user.getPassword().equals(password.getText().toString())) {
+	        			
+	        			Intent intent = new Intent(AuthenticationActivity.this,
+	    						HomeActivity.class);
+	        		
+	        			// create a sharedPreferences
+	        			//	-> Just save the idUser
+						SharedPreferences settings = AuthenticationActivity.this.
+								getSharedPreferences("settings", 
+			        			Context.MODE_WORLD_READABLE);
+						
+						// put the idUser in settings
+						SharedPreferences.Editor editor = settings.edit();
+						editor.putInt("IDUser", manager.GetUserByArgument(0, 
+									login.getText().toString()).getId());
+						editor.commit();
+			        	
+	        			// Navigate to next activity
+	        			startActivity(intent);
+	        			finish();
+	        		} else {
+	        			Toast.makeText(getBaseContext(), "Fail password".toString(),
+	        					Toast.LENGTH_LONG).show();
+	        			createDialog();
+	        		}
+	        	} else {
+	        		Toast.makeText(getBaseContext(), "User don't exist".toString(),
+	    					Toast.LENGTH_LONG).show();
+	        		createDialog();
+	        	}
+			} else {
+				Toast.makeText(getBaseContext(), "no informations filled".toString(),
     					Toast.LENGTH_LONG).show();
-        		
-        		Intent intent = new Intent(AuthenticationActivity.this,
-    					AuthenticationActivity.class);
-        		
-        		startActivity(intent);
-        	}
+				createDialog();
+			}
 		}
 	};
 	

@@ -3,6 +3,7 @@ package com.iia.activities;
 import java.net.URL;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -59,8 +60,6 @@ public class CompassActivity extends Activity implements SensorEventListener {
 		// image representation of the compass
         image = (ImageView) findViewById(R.id.imageViewCompass);
  
-        // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) findViewById(R.id.tvHeading);
         // TextView shown distance of the Location
         distanceTXT = (TextView) findViewById(R.id.distance);
  
@@ -115,19 +114,18 @@ public class CompassActivity extends Activity implements SensorEventListener {
     	// calcul of the distance between the 2 locations
     	distance = CalculDegree.getDistance(myLocation, toLocation);
     	
-    	if (distance <= 0.1) {
+    	if (distance <= 1) {
 			chrono.stop();
 			Toast.makeText(getBaseContext(), "You're arrived !!!".toString(),
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 		} else {
 
 	    	// calcul the degree to rotate : angle around the z-axis rotated
 	    	// -  fixed angle point to the location
 			degree = Math.round(event.values[0]) - orientation;
 			
-	        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
 	    	// Indicate distance to the point
-	    	distanceTXT.setText("Distance : " + distance);
+	    	distanceTXT.setText("Distance : " + distance * 1000 + " m (" + distance + " km)");
 	    	
 	        // create a rotation animation (reverse turn degree degrees)
 	        RotateAnimation ra = new RotateAnimation(
@@ -154,8 +152,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
         // not in use
     }
     
-    
-    private class ThreadChronometer extends AsyncTask<URL, Integer, Long> {
+	private class ThreadChronometer extends AsyncTask<URL, Integer, Long> {
 
     	/* (non-Javadoc)
     	 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])

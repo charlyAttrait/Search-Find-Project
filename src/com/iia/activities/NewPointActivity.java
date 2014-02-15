@@ -136,6 +136,7 @@ public class NewPointActivity extends Activity {
         		Intent intent = new Intent(NewPointActivity.this,
             			ListPointActivity.class);
             	startActivity(intent);
+            	finish();
 			} else {
 				Toast.makeText(NewPointActivity.this,
 						"no name completed!".toString(),

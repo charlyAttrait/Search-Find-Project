@@ -53,7 +53,7 @@ public class HomeActivity extends Activity {
 						ProfilActivity.class);
         		
         		startActivity(intent);
-				}
+			}
 		});
 		
 		btnPoint.setOnClickListener(new OnClickListener() {
@@ -63,7 +63,7 @@ public class HomeActivity extends Activity {
 						ListPointActivity.class);
         		
         		startActivity(intent);
-				}
+			}
 		});
 		
 		tvOut.setOnClickListener(new OnClickListener() {
