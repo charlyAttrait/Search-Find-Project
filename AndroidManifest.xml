@@ -66,10 +66,12 @@
             android:name="com.iia.activities.AuthenticationActivity"
             android:label="@string/app_name" >
         </activity>
+        <!-- 
         <activity
             android:name="com.iia.searchandfind.UtilLocationManager"
             android:label="@string/app_name" >
         </activity>
+         -->
         <activity
             android:name="com.iia.activities.CompassActivity"
             android:label="@string/title_activity_compass"

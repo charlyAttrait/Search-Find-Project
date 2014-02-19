@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -73,7 +74,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
 				(MapFragment) getFragmentManager().
 				findFragmentById(R.id.fragment_map));
         // get my current location
-        myLocation = utilLocationManager.myLocation;
+        myLocation = UtilLocationManager.myLocation;
         // define the destination point
         toLocation = new LatLng(item.getCoordLat(), item.getCoordLong());
         
@@ -104,15 +105,31 @@ public class CompassActivity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
     	// update my current location
     	utilLocationManager.onResume();
-    	myLocation = utilLocationManager.myLocation;
+    	myLocation = UtilLocationManager.myLocation;
     	
     	// angle degree to move
     	float degree;
     	
+    	Location from = new Location("");
+    	from.setLatitude(myLocation.latitude);
+    	from.setLongitude(myLocation.longitude);
+    	Location to = new Location("");
+    	to.setLatitude(toLocation.latitude);
+    	to.setLongitude(toLocation.longitude);
+    	
     	// calcul of the fixed angle point to the location
-    	orientation = CalculDegree.returnDegree(myLocation, toLocation);
+    	//orientation = CalculDegree.returnDegree(myLocation, toLocation);
+    	orientation = from.bearingTo(to);
     	// calcul of the distance between the 2 locations
-    	distance = CalculDegree.getDistance(myLocation, toLocation);
+    	//distance = CalculDegree.getDistance(myLocation, toLocation);
+    	float[] result = new float[1];
+    	Location.distanceBetween(myLocation.latitude, 
+    			myLocation.longitude, 
+    			toLocation.latitude, 
+    			toLocation.longitude, 
+    			result);
+    	
+    	distance = result[0];
     	
     	if (distance <= 1) {
 			chrono.stop();
@@ -125,7 +142,7 @@ public class CompassActivity extends Activity implements SensorEventListener {
 			degree = Math.round(event.values[0]) - orientation;
 			
 	    	// Indicate distance to the point
-	    	distanceTXT.setText("Distance : " + distance * 1000 + " m (" + distance + " km)");
+	    	distanceTXT.setText("Distance : " + distance + " m (" + distance / 1000 + " km)");
 	    	
 	        // create a rotation animation (reverse turn degree degrees)
 	        RotateAnimation ra = new RotateAnimation(

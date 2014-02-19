@@ -24,6 +24,7 @@ public class UtilLocationManager implements LocationListener {
 	private String provider;
 	
 	public static LatLng myLocation;
+	public static Location myRealLocation;
 	
 	private GoogleMap map;
 	
@@ -53,6 +54,7 @@ public class UtilLocationManager implements LocationListener {
 		    	// set new coordinate of myLocation
 		    	myLocation = new LatLng(location.getLatitude(), 
 		    			location.getLongitude());
+		    	myRealLocation = location;
 				
 		    	// set a marker on my position
 				MarkerOptions options = new MarkerOptions();
@@ -74,12 +76,7 @@ public class UtilLocationManager implements LocationListener {
 			    map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 		    }
 
-		    // Ask position update
-		    myLocationManager.requestLocationUpdates(
-	                provider,
-	                100,
-	                0, 
-	                this);
+		    onResume();
 		}
 	}
 	
@@ -95,6 +92,12 @@ public class UtilLocationManager implements LocationListener {
 	 */
 	public void onResume() {
 		myLocationManager.requestLocationUpdates(provider, 100, 0, this);
+		if (myLocationManager.getLastKnownLocation(provider) != null) {
+			myLocation = new LatLng(
+					myLocationManager.getLastKnownLocation(provider).getLatitude(),
+					myLocationManager.getLastKnownLocation(provider).getLongitude());
+			myRealLocation = myLocationManager.getLastKnownLocation(provider);
+		}
 	}
 	
 	@Override
@@ -102,6 +105,7 @@ public class UtilLocationManager implements LocationListener {
 		if (location != null) {
 	    	myLocation = new LatLng(location.getLatitude(), 
 	    			location.getLongitude());
+	    	myRealLocation = location;
 			
 			MarkerOptions options = new MarkerOptions();
 			

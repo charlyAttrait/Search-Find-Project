@@ -15,7 +15,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.iia.data.Classes.Item;
 import com.iia.data.Managers.ItemManager;
-import com.iia.data.Managers.UserManager;
 import com.iia.searchandfind.MainActivity;
 import com.iia.searchandfind.R;
 import com.iia.searchandfind.UtilLocationManager;
@@ -90,8 +89,7 @@ public class NewPointActivity extends Activity {
         			UtilLocationManager utilLocationManager = 
         					new UtilLocationManager(NewPointActivity.this,
         							(MapFragment) getFragmentManager().
-        							findFragmentById(R.id.fragment_map));;
-        			
+        							findFragmentById(R.id.fragment_map));
         			// check the current location is not null
         			if (utilLocationManager.myLocation != null) {
         				// get my current location
